@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Calcula tu flete · Biogreen Chile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  /* ── Biogreen brand colors (Pantone 348c) ── */
+  --green:#00833e;--green-dark:#006e34;--green-mid:#3f9e69;
+  --green-light:#e9f1e5;--green-sage:#f3f8f1;
+  --green-900:#0e3b22;--green-800:#005a2a;
+  /* ── Sage (fondos de sección) ── */
+  --sage:#b5ceac;--sage-300:#c8dcc1;--sage-200:#dce9d7;--sage-100:#e9f1e5;--sage-50:#f3f8f1;
+  /* ── Neutrals (gris 70% anchored) ── */
+  --gray-50:#f7f9f6;--gray-100:#eef1ed;
+  --gray-200:#e2e6e1;--gray-400:#9aa09a;--gray-500:#767c76;--gray-600:#5c625c;
+  --gray-800:#333333;--gray-900:#1a1a1a;--white:#fff;
+  /* ── Warning / pago al recibir ── */
+  --warn:#dd6b20;--warn-soft:#fffaf0;--warn-border:#f6ad55;
+  /* ── Shadows ── */
+  --shadow:0 1px 3px rgba(14,59,34,.06),0 8px 22px rgba(14,59,34,.05);
+  --shadow-lg:0 4px 6px rgba(14,59,34,.06),0 10px 30px rgba(14,59,34,.09);
+  --r:14px;--r-sm:10px;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Helvetica Neue',Arial,sans-serif;
+  background:var(--sage-50);color:var(--gray-800);min-height:100vh;display:flex;flex-direction:column;}
+
+/* ── HEADER ─────────────────────────────────────── */
+.header{background:var(--white);height:68px;padding:0 24px;display:flex;align-items:center;
+  border-bottom:1px solid var(--gray-200);box-shadow:0 1px 4px rgba(0,0,0,.05);
+  position:sticky;top:0;z-index:100;}
+.header-inner{max-width:900px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
+.brand{display:flex;align-items:center;gap:10px;}
+.brand-logo{width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
+.header-pill{background:var(--sage-200);color:var(--green-900);font-size:11px;font-weight:700;
+  padding:5px 14px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;border:none;}
+
+/* ── HERO ─────────────────────────────────────────── */
+.hero{background:var(--sage);padding:52px 24px 82px;text-align:center;
+  position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:40px;
+  background:var(--sage-50);clip-path:ellipse(55% 100% at 50% 100%);}
+.deco-shape{position:absolute;border-radius:var(--r);pointer-events:none;}
+.deco-cyan{background:rgba(0,168,204,.35);}
+.deco-lime{background:rgba(170,205,60,.35);}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;
+  font-size:11px;font-weight:700;color:var(--green-800);letter-spacing:.08em;text-transform:uppercase;
+  margin-bottom:18px;}
+.hero-eyebrow svg{width:13px;height:13px;}
+.hero-title{color:var(--green-900);font-size:clamp(24px,5vw,34px);font-weight:800;letter-spacing:-.03em;margin-bottom:8px;}
+.hero-sub{color:var(--green-800);font-size:15px;margin-bottom:26px;}
+
+/* ── STEPS BAR ───────────────────────────────────── */
+.steps-bar{max-width:420px;margin:0 auto;display:flex;align-items:center;gap:0;}
+.step{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--green-800);
+  letter-spacing:.3px;text-transform:uppercase;opacity:.55;transition:opacity .25s;}
+.step.active,.step.done{opacity:1;}
+.step-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.55);color:var(--green-800);
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
+.step.active .step-num{background:var(--green);color:#fff;}
+.step.done .step-num{background:var(--green-mid);color:#fff;}
+.step-line{flex:1;height:2px;background:rgba(255,255,255,.5);margin:0 8px;min-width:16px;}
+.step-line.done{background:var(--green-mid);}
+
+/* ── RESULT SECTION WRAP ─────────────────────────── */
+.result-section{flex:1;padding:0 24px 52px;margin-top:8px;}
+.result-inner{max-width:660px;margin:0 auto;}
+
+/* ── CARD ────────────────────────────────────────── */
+.card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-lg);
+  overflow:hidden;margin-bottom:14px;animation:up .35s ease;border:1px solid var(--gray-200);}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.card-head{background:var(--green-900);padding:18px 24px;display:flex;align-items:center;gap:12px;}
+.card-head .icon{font-size:19px;}
+.card-head .title{color:#fff;font-size:14px;font-weight:700;}
+.card-head .sub{color:rgba(255,255,255,.65);font-size:12px;margin-top:2px;}
+.card-body{padding:24px;}
+
+/* ── FORM ELEMENTS ───────────────────────────────── */
+label{display:block;font-size:12.5px;font-weight:700;color:var(--gray-600);margin-bottom:8px;letter-spacing:.2px;
+  text-transform:uppercase;}
+.input-icon-wrap{position:relative;}
+.input-icon-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;
+  color:var(--gray-400);pointer-events:none;}
+input[type=text],select{width:100%;padding:14px 14px 14px 42px;font-size:15px;font-family:inherit;
+  border:1px solid var(--gray-200);border-radius:var(--r-sm);outline:none;color:var(--gray-800);
+  background:#fff;transition:border-color .15s,box-shadow .15s;appearance:none;}
+input[type=text]:focus,select:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(67,160,71,.12);}
+input.error{border-color:#dc2626!important;box-shadow:0 0 0 3px rgba(220,38,38,.1)!important;}
+.err-msg{color:#dc2626;font-size:12px;margin-top:6px;display:flex;align-items:center;gap:4px;}
+
+.dropdown{width:100%;margin-top:6px;background:#fff;border:1px solid var(--green-mid);border-radius:var(--r-sm);
+  box-shadow:var(--shadow-lg);display:none;}
+.dropdown.open{display:block;}
+.dropdown-item{padding:11px 16px;font-size:14px;cursor:pointer;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid var(--gray-100);transition:background .1s;}
+.dropdown-item:last-child{border-bottom:none;}
+.dropdown-item:hover,.dropdown-item.focused{background:var(--sage-50);}
+.dropdown-item .comuna-name{font-weight:600;color:var(--gray-800);}
+.dropdown-item .courier-hint{font-size:11px;color:var(--gray-400);margin-top:1px;}
+.dropdown-item.no-service .comuna-name{color:var(--gray-400);}
+.dropdown-empty{padding:16px;text-align:center;color:var(--gray-400);font-size:14px;}
+
+/* ── TRANSPORT CHIPS ─────────────────────────────── */
+.transport-section{margin-top:20px;}
+.transport-label{font-size:12.5px;font-weight:700;color:var(--gray-600);margin-bottom:10px;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;
+  border:1px solid var(--gray-200);background:var(--gray-50);color:var(--gray-600);
+  transition:all .15s;user-select:none;display:flex;align-items:center;gap:6px;}
+.chip:hover{border-color:var(--green-mid);color:var(--green-dark);background:var(--sage-50);}
+.chip.selected{background:var(--green);border-color:var(--green);color:#fff;}
+.chip.pay-on-delivery{border-color:var(--warn-border);color:#92400e;background:var(--warn-soft);}
+.chip.pay-on-delivery.selected{background:var(--warn);border-color:var(--warn);color:#fff;}
+.chip-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.6;}
+.no-transport,.disabled-notice{padding:14px 18px;border-radius:var(--r-sm);font-size:13px;
+  display:flex;align-items:center;gap:8px;}
+.no-transport{background:#fff5f5;border:1px solid #fca5a5;color:#dc2626;}
+.disabled-notice{background:#fff5f5;border:1px solid #fca5a5;color:#dc2626;}
+
+/* ── FORM GRID ───────────────────────────────────── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;}
+.select-wrap{position:relative;}
+.select-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  pointer-events:none;color:var(--gray-500);font-size:13px;}
+.select-wrap select{padding-left:14px;}
+
+/* ── NOTES ───────────────────────────────────────── */
+.warn-note{background:var(--warn-soft);border-left:3px solid var(--warn-border);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;padding:12px 16px;font-size:13px;color:#92400e;
+  line-height:1.55;margin-top:16px;}
+.info-note{background:var(--sage-50);border-left:3px solid var(--green);
+  border-radius:0 var(--r-sm) var(--r-sm) 0;padding:12px 16px;font-size:13px;color:var(--green-900);
+  line-height:1.55;margin-top:16px;}
+
+/* ── BUTTON ──────────────────────────────────────── */
+.btn-calc{width:100%;margin-top:22px;background:var(--green);color:#fff;border:none;border-radius:var(--r-sm);
+  padding:15px 24px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(45,110,50,.3);transition:all .18s;
+  font-family:inherit;letter-spacing:.2px;}
+.btn-calc:hover{background:var(--green-dark);transform:translateY(-1px);box-shadow:0 6px 16px rgba(45,110,50,.38);}
+.btn-calc:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+
+/* ── RESULT ──────────────────────────────────────── */
+.result-header{background:var(--green-900);padding:24px;text-align:center;}
+.result-context{color:rgba(255,255,255,.7);font-size:12px;margin-bottom:12px;letter-spacing:.3px;}
+.result-transport-name{color:#fff;font-size:16px;font-weight:800;}
+.result-body{padding:28px 24px;text-align:center;}
+.big-price{font-size:52px;font-weight:900;color:var(--green);line-height:1;margin-bottom:10px;letter-spacing:-.02em;}
+.big-price.pay-on-delivery{font-size:32px;color:var(--warn);}
+.result-note{display:inline-block;background:var(--sage-50);border-radius:var(--r-sm);
+  padding:12px 20px;font-size:13px;color:var(--green-900);max-width:460px;line-height:1.6;}
+.result-note.warning{background:var(--warn-soft);color:#92400e;}
+.result-badge{display:inline-block;background:var(--warn);color:#fff;border-radius:6px;padding:3px 10px;
+  font-size:11px;font-weight:700;letter-spacing:.4px;margin-bottom:14px;text-transform:uppercase;}
+
+/* ── COMPARISON TABLE ────────────────────────────── */
+.table-header{padding:18px 22px 14px;border-bottom:1px solid var(--gray-100);
+  display:flex;align-items:baseline;gap:10px;}
+.table-header .title{font-weight:800;color:var(--green-900);font-size:15px;}
+.table-header .subtitle{font-size:12px;color:var(--gray-400);}
+.table-wrap{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+thead tr{background:var(--gray-50);}
+thead th{padding:10px 16px;color:var(--green-800);font-weight:800;font-size:11px;letter-spacing:.6px;
+  white-space:nowrap;text-transform:uppercase;}
+thead th:first-child{text-align:left;}
+thead th:not(:first-child){text-align:right;}
+tbody tr{border-bottom:1px solid var(--gray-100);transition:background .1s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--gray-50);}
+tbody tr.selected{background:var(--sage-50)!important;}
+tbody tr.selected td:first-child{border-left:3px solid var(--green);}
+tbody tr:not(.selected) td:first-child{border-left:3px solid transparent;}
+tbody td{padding:13px 16px;}
+tbody td:first-child{color:var(--gray-800);}
+tbody tr.selected td:first-child{font-weight:700;color:var(--green-dark);}
+tbody td:not(:first-child){text-align:right;color:var(--gray-500);}
+tbody tr.selected td.cost-col{color:var(--green-dark);font-weight:800;font-size:15px;}
+td.cost-col{font-weight:700;color:var(--gray-800);}
+td.pay-on-delivery{color:var(--warn)!important;font-weight:700;}
+.badge-table{font-size:11px;background:var(--green);color:#fff;border-radius:4px;padding:2px 7px;
+  margin-left:8px;vertical-align:middle;}
+.badge-par{font-size:11px;background:var(--warn);color:#fff;border-radius:4px;padding:2px 7px;
+  margin-left:8px;vertical-align:middle;}
+
+/* ── SPINNER / LOADING ───────────────────────────── */
+.loading{text-align:center;padding:16px;color:var(--gray-400);font-size:13px;}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--gray-200);
+  border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;
+  vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* ── HELP SECTION ────────────────────────────────── */
+.help-section{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:28px 24px;margin:0 auto 0;max-width:660px;text-align:center;border:1px solid var(--gray-200);}
+.help-icon{font-size:24px;margin-bottom:10px;color:var(--gray-400);}
+.help-title{font-size:15px;font-weight:700;color:var(--gray-900);margin-bottom:4px;}
+.help-sub{font-size:13px;color:var(--gray-500);margin-bottom:18px;}
+.btn-help{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;
+  border-radius:var(--r-sm);padding:13px 28px;font-size:14px;font-weight:700;text-decoration:none;
+  font-family:inherit;box-shadow:0 2px 8px rgba(0,131,62,.25);transition:all .18s;letter-spacing:.2px;}
+.btn-help:hover{background:var(--green-dark);transform:translateY(-1px);}
+
+/* ── FOOTER ──────────────────────────────────────── */
+.footer{background:var(--white);border-top:1px solid var(--gray-200);padding:20px 24px;
+  text-align:center;font-size:12px;color:var(--gray-400);line-height:1.9;margin-top:auto;}
+.footer strong{color:var(--gray-500);}
+.table-footer{padding:12px 0 16px;text-align:center;font-size:11px;color:var(--gray-400);}
+
+.hidden{display:none!important;}
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media(max-width:520px){
+  .hero{padding:36px 16px 68px;}
+  .form-grid{grid-template-columns:1fr;}
+  .result-section{padding:0 12px 40px;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-logo"><img src="https://biogreenchile.com/wp-content/uploads/2026/03/LOGO-BIOGREEN-2024_Mesa-de-trabajo-1-e1719951255289.webp" alt="Biogreen" style="height:56px;width:auto;object-fit:contain;"/></div>
+    </div>
+    <span class="header-pill">Calculadora de Flete</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="deco-shape deco-cyan" style="width:220px;height:130px;top:-30px;right:10%;transform:rotate(-8deg);"></div>
+  <div class="deco-shape deco-lime" style="width:160px;height:110px;bottom:-20px;left:8%;transform:rotate(8deg);"></div>
+  <div class="hero-eyebrow">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+      <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+    </svg>
+    Calculadora de flete
+  </div>
+  <h1 class="hero-title">¿Cuánto cuesta enviar tu pedido?</h1>
+  <p class="hero-sub">Elige tu comuna y descubre el costo de flete en segundos.</p>
+
+  <div class="steps-bar" id="steps-bar">
+    <div class="step active" id="step1-ind"><div class="step-num">1</div> <span>Tu comuna</span></div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="step2-ind"><div class="step-num">2</div> <span>Tu pedido</span></div>
+    <div class="step-line" id="line2"></div>
+    <div class="step" id="step3-ind"><div class="step-num">3</div> <span>Tu flete</span></div>
+  </div>
+</section>
+
+<!-- RESULTADO -->
+<section class="result-section">
+  <div class="result-inner">
+
+    <!-- Card 1: Comuna -->
+    <div class="card" id="card-comuna">
+      <div class="card-head">
+        <div class="icon">📍</div>
+        <div>
+          <div class="title">¿En qué comuna vives?</div>
+          <div class="sub">Busca tu comuna para ver los transportes disponibles</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="loading-comunas" class="loading">
+          <span class="spinner"></span> Cargando comunas...
+        </div>
+        <div id="comunas-ready" class="hidden">
+          <label for="comuna-input">Escribe el nombre de tu comuna</label>
+          <div class="autocomplete-wrap">
+            <div class="input-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="comuna-input" placeholder="Ej: Santiago, Temuco, Viña del Mar..." autocomplete="off"/>
+            </div>
+            <div class="dropdown" id="dropdown"></div>
+          </div>
+          <p class="err-msg hidden" id="err-comuna">⚠ Selecciona una comuna válida de la lista.</p>
+        </div>
+
+        <!-- Transport chips (shown after commune selection) -->
+        <div id="transport-section" class="transport-section hidden">
+          <div class="transport-label">Transportes disponibles en <strong id="comuna-selected-name"></strong></div>
+          <div class="chips" id="chips"></div>
+          <div class="info-note" id="note-transporte" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Pedido (hidden until transport selected) -->
+    <div class="card hidden" id="card-pedido">
+      <div class="card-head">
+        <div class="icon">🛒</div>
+        <div>
+          <div class="title">Datos de tu pedido</div>
+          <div class="sub">Ingresa el valor y tu categoría</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="form-grid">
+          <div>
+            <label for="valor">Valor de compra (CLP)</label>
+            <div class="input-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <input type="text" id="valor" inputmode="numeric" placeholder="Ej: $150.000" autocomplete="off"/>
+            </div>
+            <p class="err-msg hidden" id="err-valor">⚠ Ingresa el valor de tu compra.</p>
+          </div>
+          <div>
+            <label for="nivel">Tu nivel</label>
+            <div class="select-wrap">
+              <select id="nivel">
+                <option value="DBR">Distribuidor</option>
+                <option value="DBA">Distribuidor Plus</option>
+                <option value="LID">Líder</option>
+                <option value="COR">Coordinador</option>
+                <option value="DIR">Director</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="warn-note">
+          ⚠️ <strong>Importante:</strong> Si realizas tu pedido antes de las 12:00, será despachado el día hábil siguiente.
+        </div>
+
+        <button class="btn-calc" id="btn-calcular" onclick="calcular()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          Calcular flete
+        </button>
+      </div>
+    </div>
+
+    <!-- Card 3: Resultado -->
+    <div class="card hidden" id="card-resultado">
+      <div class="result-header">
+        <div class="result-context" id="res-context"></div>
+        <div class="result-transport-name" id="res-transport"></div>
+      </div>
+      <div class="result-body" id="res-body"></div>
+    </div>
+
+    <!-- Card 4: Comparativa -->
+    <div class="card hidden" id="card-tabla">
+      <div class="table-header">
+        <span class="title">Comparativa de transportes</span>
+        <span class="subtitle" id="tabla-subtitle"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Transporte</th>
+              <th>Costo flete</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-body"></tbody>
+        </table>
+      </div>
+      <p class="table-footer">Valores referenciales · Uso exclusivo interno</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="help-section">
+  <div class="help-icon">💬</div>
+  <div class="help-title">¿Tienes alguna duda o necesitas consultar algo más?</div>
+  <div class="help-sub">Nuestro equipo está listo para ayudarte.</div>
+  <a href="https://biogreenchile.freshdesk.com/es-LA/support/tickets/new" target="_blank" rel="noopener" class="btn-help">
+    📋 &nbsp;Envíanos una solicitud de servicio
+  </a>
+</div>
+
+<footer class="footer">
+  <p>© 2026 <strong>Biogreen Chile</strong> · Todos los derechos reservados</p>
+  <p>Valores referenciales de flete · Uso exclusivo interno</p>
+</footer>
+
+<script>
+/* ── Transport data (matriz de fletes actualizada) ── */
+const TRANSPORTES = [
+  { id:'ALAS',            nombre:'ALAS',                               minimo:7990,  par:false, tasas:{DBR:.0109,DBA:.0109,LID:.0169,COR:.0169,DIR:.0259} },
+  { id:'ALAS_MAG',        nombre:'ALAS (Magallanes - Aysén)',          minimo:12990, par:false, tasas:{DBR:.0200,DBA:.0200,LID:.0300,COR:.0300,DIR:.0400} },
+  { id:'BLUEXPRESS_MAG',  nombre:'BLUE EXPRESS (Magallanes - Aysén)',  minimo:14990, par:false, tasas:{DBR:.0292,DBA:.0292,LID:.0335,COR:.0335,DIR:.0443} },
+  { id:'BLUEXPRESS',      nombre:'BLUEXPRESS',                         minimo:8990,  par:false, tasas:{DBR:.0159,DBA:.0159,LID:.0189,COR:.0189,DIR:.0289} },
+  { id:'CACEM',           nombre:'CACEM',                              minimo:1,     par:true,  tasas:null },
+  { id:'GLOBAL',          nombre:'GLOBAL',                             minimo:5990,  par:false, tasas:{DBR:.0099,DBA:.0099,LID:.0149,COR:.0149,DIR:.0189} },
+  { id:'GLOBAL2',         nombre:'GLOBAL (Lampa - Colina)',            minimo:7990,  par:false, tasas:{DBR:.0110,DBA:.0110,LID:.0169,COR:.0169,DIR:.0250} },
+  { id:'MARDAN',          nombre:'MARDAN',                             minimo:1,     par:true,  tasas:null },
+  { id:'MAREXPRESS',      nombre:'MAREXPRESS',                         minimo:1,     par:true,  tasas:null },
+  { id:'STARKEN',         nombre:'STARKEN',                            minimo:9990,  par:false, tasas:{DBR:.0239,DBA:.0239,LID:.0309,COR:.0309,DIR:.0409} },
+];
+
+const NIVEL_LABEL = {DBR:'Distribuidor',DBA:'Distribuidor Plus',LID:'Líder',COR:'Coordinador',DIR:'Director'};
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnB8RhEI8XWuCODDvbkMV3HCL9enCeubwohpMlQXdrAYQcjWLNS-8XVEmHdwBjaNGPEA/exec';
+
+/* ── State ── */
+let allComunas   = [];  // [{nombre, couriers:[], habilitado}]
+let selectedComuna = null;
+let selectedTransportId = null;
+let dropdownFocusIdx = -1;
+
+/* ── Helpers ── */
+function clp(n){ return '$'+Math.round(n).toLocaleString('es-CL'); }
+
+function parseCouriersToIds(str){
+  if(!str) return [];
+  const found = [];
+
+  // El texto puede traer varios couriers separados por coma, cada uno con su propio sufijo regional
+  str.split(',').forEach(part => {
+    const p = part.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    const regional = p.includes('MAGALLANES') || p.includes('AYSEN');
+    const lampaColina = p.includes('LAMPA') || p.includes('COLINA');
+
+    if(p.includes('STARKEN'))                              found.push('STARKEN');
+    else if(p.includes('BLUEXPRESS') || p.includes('BLUE EXPRESS')) found.push(regional ? 'BLUEXPRESS_MAG' : 'BLUEXPRESS');
+    else if(p.includes('ALAS'))                            found.push(regional ? 'ALAS_MAG' : 'ALAS');
+    else if(p.includes('CACEM'))                            found.push('CACEM');
+    else if(p.includes('MAREXPRESS'))                       found.push('MAREXPRESS');
+    else if(p.includes('MARDAN'))                           found.push('MARDAN');
+    else if(p.includes('GLOBAL'))                           found.push(lampaColina ? 'GLOBAL2' : 'GLOBAL');
+  });
+
+  return [...new Set(found)];
+}
+
+function calcFlete(t, nk, valor){
+  if(t.par || !t.tasas) return null;
+  const pct  = valor * t.tasas[nk];
+  const cost = Math.max(t.minimo, pct);
+  return { cost, minApplied: cost === t.minimo, tasa: t.tasas[nk], pct };
+}
+
+/* ── Load comunas from Apps Script ── */
+async function loadComunas(){
+  try {
+    const res  = await fetch(APPS_SCRIPT_URL);
+    const data = await res.json();
+
+    allComunas = data.map(r => ({
+      nombre:     (r.nombre || '').trim(),
+      ids:        parseCouriersToIds(r.couriers || ''),
+      habilitado: (r.habilitado || 'N').toString().trim().toUpperCase()
+    })).filter(c => c.nombre);
+
+    document.getElementById('loading-comunas').classList.add('hidden');
+    document.getElementById('comunas-ready').classList.remove('hidden');
+  } catch(e){
+    document.getElementById('loading-comunas').innerHTML = '⚠ No se pudo cargar la lista de comunas. Recarga la página.';
+  }
+}
+
+/* ── Autocomplete ── */
+const input    = document.getElementById('comuna-input');
+const dropdown = document.getElementById('dropdown');
+
+function getMatches(q){
+  if(!q) return [];
+  const q2 = q.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  return allComunas.filter(c => {
+    const n = c.nombre.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    return n.includes(q2);
+  }).slice(0, 30);
+}
+
+function renderDropdown(matches){
+  dropdown.innerHTML = '';
+  if(!matches.length){
+    dropdown.innerHTML = '<div class="dropdown-empty">Sin resultados. Intenta con otra ortografía.</div>';
+    dropdown.classList.add('open');
+    return;
+  }
+  matches.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'dropdown-item' + (c.habilitado !== 'S' ? ' no-service' : '');
+    el.dataset.idx = i;
+    const hint = c.ids.length
+      ? c.ids.map(id => TRANSPORTES.find(t=>t.id===id)?.nombre || id).join(', ')
+      : (c.habilitado === 'S' ? 'Sin transporte asignado' : 'Envío no disponible');
+    el.innerHTML = `<div><div class="comuna-name">${c.nombre}</div><div class="courier-hint">${hint}</div></div>`;
+    el.addEventListener('mousedown', ()=>{ selectComuna(c); });
+    dropdown.appendChild(el);
+  });
+  dropdownFocusIdx = -1;
+  dropdown.classList.add('open');
+}
+
+input.addEventListener('input', function(){
+  document.getElementById('err-comuna').classList.add('hidden');
+  this.classList.remove('error');
+  selectedComuna = null;
+  selectedTransportId = null;
+  hideTransportSection();
+  hideResults();
+
+  const q = this.value.trim();
+  if(q.length < 1){ dropdown.classList.remove('open'); return; }
+  renderDropdown(getMatches(q));
+});
+
+input.addEventListener('keydown', function(e){
+  const items = dropdown.querySelectorAll('.dropdown-item');
+  if(e.key === 'ArrowDown'){
+    e.preventDefault();
+    dropdownFocusIdx = Math.min(dropdownFocusIdx+1, items.length-1);
+    updateFocus(items);
+  } else if(e.key === 'ArrowUp'){
+    e.preventDefault();
+    dropdownFocusIdx = Math.max(dropdownFocusIdx-1, 0);
+    updateFocus(items);
+  } else if(e.key === 'Enter'){
+    e.preventDefault();
+    if(dropdownFocusIdx >= 0 && items[dropdownFocusIdx]){
+      const idx = parseInt(items[dropdownFocusIdx].dataset.idx);
+      const matches = getMatches(input.value.trim());
+      if(matches[idx]) selectComuna(matches[idx]);
+    }
+  } else if(e.key === 'Escape'){
+    dropdown.classList.remove('open');
+  }
+});
+
+function updateFocus(items){
+  items.forEach((el,i)=>{ el.classList.toggle('focused', i===dropdownFocusIdx); });
+  if(items[dropdownFocusIdx]) items[dropdownFocusIdx].scrollIntoView({block:'nearest'});
+}
+
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.autocomplete-wrap')) dropdown.classList.remove('open');
+});
+
+function selectComuna(c){
+  selectedComuna = c;
+  input.value = c.nombre;
+  dropdown.classList.remove('open');
+  input.classList.remove('error');
+  document.getElementById('err-comuna').classList.add('hidden');
+  renderTransportChips(c);
+}
+
+/* ── Transport chips ── */
+function renderTransportChips(c){
+  const section   = document.getElementById('transport-section');
+  const chipsEl   = document.getElementById('chips');
+  const nameLabel = document.getElementById('comuna-selected-name');
+  const note      = document.getElementById('note-transporte');
+
+  nameLabel.textContent = c.nombre;
+  chipsEl.innerHTML = '';
+  note.style.display = 'none';
+  selectedTransportId = null;
+  hideResults();
+  document.getElementById('card-pedido').classList.add('hidden');
+
+  if(c.habilitado !== 'S'){
+    chipsEl.innerHTML = '<div class="disabled-notice">🚫 El envío a esta comuna no está habilitado actualmente.</div>';
+    section.classList.remove('hidden');
+    updateSteps(1);
+    return;
+  }
+
+  if(!c.ids.length){
+    chipsEl.innerHTML = '<div class="no-transport">📦 Esta comuna no tiene transportes asignados. Consulta con tu ejecutiva.</div>';
+    section.classList.remove('hidden');
+    updateSteps(1);
+    return;
+  }
+
+  const paOnDelivery = [];
+  const regular = [];
+  c.ids.forEach(id => {
+    const t = TRANSPORTES.find(x=>x.id===id);
+    if(!t) return;
+    t.par ? paOnDelivery.push(t) : regular.push(t);
+  });
+
+  [...regular, ...paOnDelivery].forEach(t => {
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (t.par ? ' pay-on-delivery' : '');
+    chip.dataset.tid = t.id;
+    chip.innerHTML = `<span class="chip-dot"></span>${t.nombre}${t.par ? ' <small style="font-size:10px;opacity:.8">(pago al recibir)</small>' : ''}`;
+    chip.addEventListener('click', ()=>{ selectTransport(c.ids, t.id); });
+    chipsEl.appendChild(chip);
+  });
+
+  if(paOnDelivery.length){
+    note.textContent = '🚚 Los transportes de pago al recibir requieren que pagues directamente al transportista cuando llegue tu pedido.';
+    note.style.display = 'block';
+  }
+
+  section.classList.remove('hidden');
+  updateSteps(1);
+}
+
+function selectTransport(availableIds, tid){
+  selectedTransportId = tid;
+  document.querySelectorAll('.chip').forEach(ch=>{
+    ch.classList.toggle('selected', ch.dataset.tid === tid);
+  });
+  hideResults();
+  document.getElementById('card-pedido').classList.remove('hidden');
+  updateSteps(2);
+  document.getElementById('card-pedido').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* ── Calculate ── */
+function calcular(){
+  // Validate
+  let ok = true;
+  if(!selectedComuna){ ok=false; input.classList.add('error'); document.getElementById('err-comuna').classList.remove('hidden'); }
+  const valor = getValor();
+  if(!valor||valor<=0){ ok=false; document.getElementById('valor').classList.add('error'); document.getElementById('err-valor').classList.remove('hidden'); }
+  if(!ok) return;
+
+  const nk = document.getElementById('nivel').value;
+  const nl = NIVEL_LABEL[nk];
+  const t  = TRANSPORTES.find(x=>x.id===selectedTransportId);
+  if(!t) return;
+  const f  = calcFlete(t, nk, valor);
+
+  // Result header
+  document.getElementById('res-context').textContent = nl + '  ·  Compra ' + clp(valor);
+  document.getElementById('res-transport').textContent = t.nombre;
+
+  const resBody = document.getElementById('res-body');
+  if(f === null){
+    resBody.innerHTML = `
+      <div class="result-badge">PAGO AL RECIBIR</div>
+      <div class="big-price pay-on-delivery">Al recibir</div>
+      <div class="result-note warning">🚚 Deberás pagar directamente al transportista cuando recibas tu pedido en <strong>${selectedComuna.nombre}</strong>.</div>`;
+  } else {
+    const minTxt = f.minApplied
+      ? `<div class="result-note">Se aplica el <strong>flete mínimo</strong> de ${t.nombre} para tu compra en <strong>${selectedComuna.nombre}</strong>.</div>`
+      : `<div class="result-note">Costo de flete estimado para tu compra en <strong>${selectedComuna.nombre}</strong>.</div>`;
+    resBody.innerHTML = `<div class="big-price">${clp(f.cost)}</div>${minTxt}`;
+  }
+
+  document.getElementById('card-resultado').classList.remove('hidden');
+
+  // Comparison table — show all available transports for this commune
+  const availableIds = selectedComuna.ids;
+  document.getElementById('tabla-subtitle').textContent = nl + ' · ' + clp(valor) + ' · ' + selectedComuna.nombre;
+  const tbody = document.getElementById('tabla-body');
+  tbody.innerHTML = '';
+
+  TRANSPORTES.filter(tr => availableIds.includes(tr.id)).forEach((tr, i) => {
+    const fr  = calcFlete(tr, nk, valor);
+    const sel = tr.id === selectedTransportId;
+    const row = document.createElement('tr');
+    row.className = sel ? 'selected' : (i%2===0 ? 'odd' : 'even');
+
+    const nameTd = document.createElement('td');
+    nameTd.innerHTML = tr.nombre
+      + (sel ? '<span class="badge-table">tu elección</span>' : '')
+      + (tr.par ? '<span class="badge-par">al recibir</span>' : '');
+    row.appendChild(nameTd);
+
+    const costTd = document.createElement('td');
+    if(tr.par){
+      costTd.textContent = 'Al recibir';
+      costTd.className   = 'pay-on-delivery';
+    } else {
+      costTd.textContent = fr ? clp(fr.cost) : '—';
+      costTd.className   = 'cost-col';
+    }
+    row.appendChild(costTd);
+    tbody.appendChild(row);
+  });
+
+  document.getElementById('card-tabla').classList.remove('hidden');
+  updateSteps(3);
+  document.getElementById('card-resultado').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* ── UI helpers ── */
+function hideTransportSection(){
+  document.getElementById('transport-section').classList.add('hidden');
+}
+function hideResults(){
+  document.getElementById('card-resultado').classList.add('hidden');
+  document.getElementById('card-tabla').classList.add('hidden');
+}
+function updateSteps(active){
+  [1,2,3].forEach(n => {
+    const el = document.getElementById('step'+n+'-ind');
+    el.classList.remove('active','done');
+    if(n < active)       el.classList.add('done');
+    else if(n === active) el.classList.add('active');
+  });
+  document.getElementById('line1').classList.toggle('done', active > 1);
+  document.getElementById('line2').classList.toggle('done', active > 2);
+}
+
+// Format input as $ with dots
+const valorInput = document.getElementById('valor');
+valorInput.addEventListener('input', function(){
+  const digits = this.value.replace(/\D/g,'');
+  const num = parseInt(digits||'0',10);
+  this.value = num > 0 ? '$'+num.toLocaleString('es-CL') : '';
+  this.classList.remove('error');
+  document.getElementById('err-valor').classList.add('hidden');
+});
+valorInput.addEventListener('keydown', function(e){ if(e.key==='Enter') calcular(); });
+
+function getValor(){
+  return parseInt(valorInput.value.replace(/\D/g,'')||'0', 10);
+}
+
+// Init
+loadComunas();
+</script>
+</body>
+</html>
