@@ -95,8 +95,10 @@ input[type=text]:focus,select:focus{border-color:var(--green-mid);box-shadow:0 0
 input.error{border-color:#dc2626!important;box-shadow:0 0 0 3px rgba(220,38,38,.1)!important;}
 .err-msg{color:#dc2626;font-size:12px;margin-top:6px;display:flex;align-items:center;gap:4px;}
 
-.dropdown{width:100%;margin-top:6px;background:#fff;border:1px solid var(--green-mid);border-radius:var(--r-sm);
-  box-shadow:var(--shadow-lg);display:none;}
+.autocomplete-wrap{position:relative;}
+.dropdown{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:300;background:#fff;
+  border:1px solid var(--green-mid);border-radius:var(--r-sm);
+  box-shadow:var(--shadow-lg);display:none;max-height:280px;overflow-y:auto;}
 .dropdown.open{display:block;}
 .dropdown-item{padding:11px 16px;font-size:14px;cursor:pointer;display:flex;align-items:center;
   justify-content:space-between;border-bottom:1px solid var(--gray-100);transition:background .1s;}
@@ -807,6 +809,200 @@ const COMUNAS_DATA=[
 {nombre:"VILLA MANIHUALES",couriers:"",habilitado:"N"},
 {nombre:"PUERTO WILLIAMS",couriers:"",habilitado:"N"}
 ];
+
+/* ── Normalize for search ── */
+function norm(s){ return s.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+
+/* ── Autocomplete ── */
+function getMatches(q){
+  const nq = norm(q);
+  return allComunas.filter(c => norm(c.nombre).includes(nq)).slice(0,10);
+}
+
+function renderDropdown(matches, q){
+  const dd = document.getElementById('dropdown');
+  if(!matches.length){
+    dd.innerHTML = '<div class="dropdown-empty">No se encontraron comunas</div>';
+    dd.classList.add('open');
+    return;
+  }
+  const re = new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+  dd.innerHTML = matches.map(c => {
+    const hi = c.nombre.replace(re,'<strong>$1</strong>');
+    const dis = c.habilitado !== 'S';
+    const idx = allComunas.indexOf(c);
+    return `<div class="dropdown-item${dis?' no-service':''}" data-idx="${idx}" onclick="selectComuna(${idx})">
+      <div class="comuna-name">${hi}</div>
+      ${dis?'<div class="courier-hint">Sin cobertura</div>':''}
+    </div>`;
+  }).join('');
+  dd.classList.add('open');
+  dropdownFocusIdx = -1;
+}
+
+function closeDropdown(){
+  const dd = document.getElementById('dropdown');
+  dd.classList.remove('open');
+  dd.innerHTML = '';
+  dropdownFocusIdx = -1;
+}
+
+function selectComuna(idx){
+  const c = allComunas[idx];
+  if(!c) return;
+  selectedComuna = c;
+  document.getElementById('comuna-input').value = c.nombre;
+  closeDropdown();
+  document.getElementById('err-comuna').classList.add('hidden');
+  showTransports(c);
+}
+
+function showTransports(c){
+  const sec = document.getElementById('transport-section');
+  document.getElementById('comuna-selected-name').textContent = c.nombre;
+  const chipsEl = document.getElementById('chips');
+  const note = document.getElementById('note-transporte');
+
+  if(c.habilitado !== 'S' || !c.ids.length){
+    chipsEl.innerHTML = '<div class="disabled-notice">⚠ No hay cobertura de transporte en esta comuna.</div>';
+    note.style.display = 'none';
+    sec.classList.remove('hidden');
+    document.getElementById('card-pedido').classList.add('hidden');
+    return;
+  }
+
+  selectedTransportId = c.ids[0];
+  chipsEl.innerHTML = c.ids.map(id => {
+    const t = TRANSPORTES.find(x => x.id === id);
+    if(!t) return '';
+    const sel = id === selectedTransportId;
+    return `<div class="chip${t.par?' pay-on-delivery':''}${sel?' selected':''}" onclick="selectTransport('${id}',this)">
+      <span class="chip-dot"></span>${t.nombre}${t.par?' · Pago al recibir':''}
+    </div>`;
+  }).join('');
+
+  note.style.display = 'none';
+  sec.classList.remove('hidden');
+  document.getElementById('card-pedido').classList.remove('hidden');
+
+  document.getElementById('step1-ind').classList.replace('active','done');
+  document.getElementById('line1').classList.add('done');
+  document.getElementById('step2-ind').classList.add('active');
+}
+
+function selectTransport(id, el){
+  selectedTransportId = id;
+  document.querySelectorAll('#chips .chip').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+/* ── Calcular flete ── */
+function calcular(){
+  let ok = true;
+  if(!selectedComuna){
+    document.getElementById('err-comuna').classList.remove('hidden');
+    ok = false;
+  }
+  const rawValor = document.getElementById('valor').value.replace(/\D/g,'');
+  const valor = parseInt(rawValor, 10);
+  if(!rawValor || isNaN(valor) || valor <= 0){
+    document.getElementById('err-valor').classList.remove('hidden');
+    ok = false;
+  } else {
+    document.getElementById('err-valor').classList.add('hidden');
+  }
+  if(!ok) return;
+
+  const nk  = document.getElementById('nivel').value;
+  const tSel = TRANSPORTES.find(x => x.id === selectedTransportId);
+  if(!tSel) return;
+
+  const res = calcFlete(tSel, nk, valor);
+
+  document.getElementById('step2-ind').classList.replace('active','done');
+  document.getElementById('line2').classList.add('done');
+  document.getElementById('step3-ind').classList.add('active');
+
+  const cardRes = document.getElementById('card-resultado');
+  cardRes.classList.remove('hidden');
+  document.getElementById('res-context').textContent =
+    `${selectedComuna.nombre} · ${NIVEL_LABEL[nk]} · Compra de ${clp(valor)}`;
+  document.getElementById('res-transport').textContent = tSel.nombre;
+
+  const body = document.getElementById('res-body');
+  if(tSel.par){
+    body.innerHTML = `<div class="result-badge">Pago al recibir</div>
+      <div class="big-price pay-on-delivery">Pago directo al transportista</div>
+      <div class="result-note warning">Este transporte cobra el flete al destinatario en el momento de la entrega.</div>`;
+  } else if(res){
+    body.innerHTML = `<div class="big-price">${clp(res.cost)}</div>
+      <div class="result-note">${res.minApplied
+        ? `Se aplica el <strong>mínimo de ${clp(tSel.minimo)}</strong> (${(tSel.tasas[nk]*100).toFixed(2)}% de ${clp(valor)} = ${clp(res.pct)})`
+        : `${(tSel.tasas[nk]*100).toFixed(2)}% de ${clp(valor)}`}</div>`;
+  }
+
+  // Tabla comparativa (solo si hay más de un transporte disponible)
+  const avail = selectedComuna.ids.map(id => TRANSPORTES.find(x => x.id === id)).filter(Boolean);
+  if(avail.length > 1){
+    const cardTabla = document.getElementById('card-tabla');
+    document.getElementById('tabla-subtitle').textContent =
+      `${selectedComuna.nombre} · ${NIVEL_LABEL[nk]} · ${clp(valor)}`;
+    document.getElementById('tabla-body').innerHTML = avail.map(t => {
+      const r   = calcFlete(t, nk, valor);
+      const sel = t.id === selectedTransportId;
+      const costTxt = t.par
+        ? `<td class="pay-on-delivery">Pago al recibir</td>`
+        : `<td class="cost-col">${clp(r.cost)}</td>`;
+      return `<tr class="${sel?'selected':''}">
+        <td>${t.nombre}${sel?'<span class="badge-table">Seleccionado</span>':''}${t.par?'<span class="badge-par">PAR</span>':''}</td>
+        ${costTxt}
+      </tr>`;
+    }).join('');
+    cardTabla.classList.remove('hidden');
+  }
+
+  cardRes.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* ── Formato de valor (separador de miles) ── */
+document.getElementById('valor').addEventListener('input', function(){
+  const raw = this.value.replace(/\D/g,'');
+  this.value = raw ? '$'+parseInt(raw,10).toLocaleString('es-CL') : '';
+});
+
+/* ── Wiring autocomplete ── */
+(function(){
+  const input = document.getElementById('comuna-input');
+
+  input.addEventListener('input', function(){
+    const q = this.value.trim();
+    if(q.length < 1){ closeDropdown(); return; }
+    renderDropdown(getMatches(q), q);
+  });
+
+  input.addEventListener('keydown', function(e){
+    const items = document.querySelectorAll('#dropdown .dropdown-item');
+    if(!items.length) return;
+    if(e.key === 'ArrowDown'){
+      e.preventDefault();
+      dropdownFocusIdx = Math.min(dropdownFocusIdx+1, items.length-1);
+      items.forEach((el,i) => el.classList.toggle('focused', i===dropdownFocusIdx));
+    } else if(e.key === 'ArrowUp'){
+      e.preventDefault();
+      dropdownFocusIdx = Math.max(dropdownFocusIdx-1, 0);
+      items.forEach((el,i) => el.classList.toggle('focused', i===dropdownFocusIdx));
+    } else if(e.key === 'Enter' && dropdownFocusIdx >= 0){
+      e.preventDefault();
+      items[dropdownFocusIdx].click();
+    } else if(e.key === 'Escape'){
+      closeDropdown();
+    }
+  });
+
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.autocomplete-wrap')) closeDropdown();
+  });
+})();
 
 /* ── Load comunas (datos embebidos) ── */
 function loadComunas(){
