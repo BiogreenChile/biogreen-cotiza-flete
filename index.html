@@ -4,408 +4,431 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Calcula tu flete · Biogreen Chile</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&display=swap" rel="stylesheet"/>
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  /* ── Biogreen brand colors (Pantone 348c) ── */
-  --green:#00833e;--green-dark:#006e34;--green-mid:#3f9e69;
-  --green-light:#e9f1e5;--green-sage:#f3f8f1;
-  --green-900:#0e3b22;--green-800:#005a2a;
-  /* ── Sage (fondos de sección) ── */
-  --sage:#b5ceac;--sage-300:#c8dcc1;--sage-200:#dce9d7;--sage-100:#e9f1e5;--sage-50:#f3f8f1;
-  /* ── Neutrals (gris 70% anchored) ── */
-  --gray-50:#f7f9f6;--gray-100:#eef1ed;
-  --gray-200:#e2e6e1;--gray-400:#9aa09a;--gray-500:#767c76;--gray-600:#5c625c;
-  --gray-800:#333333;--gray-900:#1a1a1a;--white:#fff;
-  /* ── Warning / pago al recibir ── */
-  --warn:#dd6b20;--warn-soft:#fffaf0;--warn-border:#f6ad55;
-  /* ── Shadows ── */
-  --shadow:0 1px 3px rgba(14,59,34,.06),0 8px 22px rgba(14,59,34,.05);
-  --shadow-lg:0 4px 6px rgba(14,59,34,.06),0 10px 30px rgba(14,59,34,.09);
-  --r:14px;--r-sm:10px;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: #f4f9f6;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #1a202c;
+  padding: 32px 16px 64px;
 }
-html{scroll-behavior:smooth;}
-body{font-family:'Helvetica Neue',Arial,sans-serif;
-  background:var(--sage-50);color:var(--gray-800);min-height:100vh;display:flex;flex-direction:column;}
 
-/* ── HEADER ─────────────────────────────────────── */
-.header{background:var(--white);height:68px;padding:0 24px;display:flex;align-items:center;
-  border-bottom:1px solid var(--gray-200);box-shadow:0 1px 4px rgba(0,0,0,.05);
-  position:sticky;top:0;z-index:100;}
-.header-inner{max-width:900px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;}
-.brand{display:flex;align-items:center;gap:10px;}
-.brand-logo{width:42px;height:42px;display:flex;align-items:center;justify-content:center;}
-.header-pill{background:var(--sage-200);color:var(--green-900);font-size:11px;font-weight:700;
-  padding:5px 14px;border-radius:20px;letter-spacing:.04em;text-transform:uppercase;border:none;}
+.wrap { max-width: 720px; margin: 0 auto; }
 
-/* ── HERO ─────────────────────────────────────────── */
-.hero{background:var(--sage);padding:52px 24px 82px;text-align:center;
-  position:relative;overflow:hidden;}
-.hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:40px;
-  background:var(--sage-50);clip-path:ellipse(55% 100% at 50% 100%);}
-.deco-shape{position:absolute;border-radius:var(--r);pointer-events:none;}
-.deco-cyan{background:rgba(0,168,204,.35);}
-.deco-lime{background:rgba(170,205,60,.35);}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;
-  font-size:11px;font-weight:700;color:var(--green-800);letter-spacing:.08em;text-transform:uppercase;
-  margin-bottom:18px;}
-.hero-eyebrow svg{width:13px;height:13px;}
-.hero-title{color:var(--green-900);font-size:clamp(24px,5vw,34px);font-weight:800;letter-spacing:-.03em;margin-bottom:8px;}
-.hero-sub{color:var(--green-800);font-size:15px;margin-bottom:26px;}
-
-/* ── STEPS BAR ───────────────────────────────────── */
-.steps-bar{max-width:420px;margin:0 auto;display:flex;align-items:center;gap:0;}
-.step{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--green-800);
-  letter-spacing:.3px;text-transform:uppercase;opacity:.55;transition:opacity .25s;}
-.step.active,.step.done{opacity:1;}
-.step-num{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.55);color:var(--green-800);
-  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;}
-.step.active .step-num{background:var(--green);color:#fff;}
-.step.done .step-num{background:var(--green-mid);color:#fff;}
-.step-line{flex:1;height:2px;background:rgba(255,255,255,.5);margin:0 8px;min-width:16px;}
-.step-line.done{background:var(--green-mid);}
-
-/* ── RESULT SECTION WRAP ─────────────────────────── */
-.result-section{flex:1;padding:0 24px 52px;margin-top:8px;}
-.result-inner{max-width:660px;margin:0 auto;}
-
-/* ── CARD ────────────────────────────────────────── */
-.card{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow-lg);
-  overflow:visible;margin-bottom:14px;animation:up .35s ease;border:1px solid var(--gray-200);}
-.card-head{border-radius:var(--r) var(--r) 0 0;overflow:hidden;}
-@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.card-head{background:var(--green-900);padding:18px 24px;display:flex;align-items:center;gap:12px;}
-.card-head .icon{font-size:19px;}
-.card-head .title{color:#fff;font-size:14px;font-weight:700;}
-.card-head .sub{color:rgba(255,255,255,.65);font-size:12px;margin-top:2px;}
-.card-body{padding:24px;}
-
-/* ── FORM ELEMENTS ───────────────────────────────── */
-label{display:block;font-size:12.5px;font-weight:700;color:var(--gray-600);margin-bottom:8px;letter-spacing:.2px;
-  text-transform:uppercase;}
-.input-icon-wrap{position:relative;}
-.input-icon-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;
-  color:var(--gray-400);pointer-events:none;}
-input[type=text],select{width:100%;padding:14px 14px 14px 42px;font-size:15px;font-family:inherit;
-  border:1px solid var(--gray-200);border-radius:var(--r-sm);outline:none;color:var(--gray-800);
-  background:#fff;transition:border-color .15s,box-shadow .15s;appearance:none;}
-input[type=text]:focus,select:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(67,160,71,.12);}
-input.error{border-color:#dc2626!important;box-shadow:0 0 0 3px rgba(220,38,38,.1)!important;}
-.err-msg{color:#dc2626;font-size:12px;margin-top:6px;display:flex;align-items:center;gap:4px;}
-
-.autocomplete-wrap{position:relative;}
-.dropdown{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:300;background:#fff;
-  border:1px solid var(--green-mid);border-radius:var(--r-sm);
-  box-shadow:var(--shadow-lg);display:none;max-height:280px;overflow-y:auto;}
-.dropdown.open{display:block;}
-.dropdown-item{padding:11px 16px;font-size:14px;cursor:pointer;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid var(--gray-100);transition:background .1s;}
-.dropdown-item:last-child{border-bottom:none;}
-.dropdown-item:hover,.dropdown-item.focused{background:var(--sage-50);}
-.dropdown-item .comuna-name{font-weight:600;color:var(--gray-800);}
-.dropdown-item .courier-hint{font-size:11px;color:var(--gray-400);margin-top:1px;}
-.dropdown-item.no-service .comuna-name{color:var(--gray-400);}
-.dropdown-empty{padding:16px;text-align:center;color:var(--gray-400);font-size:14px;}
-
-/* ── TRANSPORT CHIPS ─────────────────────────────── */
-.transport-section{margin-top:20px;}
-.transport-label{font-size:12.5px;font-weight:700;color:var(--gray-600);margin-bottom:10px;}
-.chips{display:flex;flex-wrap:wrap;gap:8px;}
-.chip{padding:9px 16px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;
-  border:1px solid var(--gray-200);background:var(--gray-50);color:var(--gray-600);
-  transition:all .15s;user-select:none;display:flex;align-items:center;gap:6px;}
-.chip:hover{border-color:var(--green-mid);color:var(--green-dark);background:var(--sage-50);}
-.chip.selected{background:var(--green);border-color:var(--green);color:#fff;}
-.chip.pay-on-delivery{border-color:var(--warn-border);color:#92400e;background:var(--warn-soft);}
-.chip.pay-on-delivery.selected{background:var(--warn);border-color:var(--warn);color:#fff;}
-.chip-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.6;}
-.no-transport,.disabled-notice{padding:14px 18px;border-radius:var(--r-sm);font-size:13px;
-  display:flex;align-items:center;gap:8px;}
-.no-transport{background:#fff5f5;border:1px solid #fca5a5;color:#dc2626;}
-.disabled-notice{background:#fff5f5;border:1px solid #fca5a5;color:#dc2626;}
-
-/* ── FORM GRID ───────────────────────────────────── */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:20px;}
-.select-wrap{position:relative;}
-.select-wrap::after{content:'▾';position:absolute;right:14px;top:50%;transform:translateY(-50%);
-  pointer-events:none;color:var(--gray-500);font-size:13px;}
-.select-wrap select{padding-left:14px;}
-
-/* ── NOTES ───────────────────────────────────────── */
-.warn-note{background:var(--warn-soft);border-left:3px solid var(--warn-border);
-  border-radius:0 var(--r-sm) var(--r-sm) 0;padding:12px 16px;font-size:13px;color:#92400e;
-  line-height:1.55;margin-top:16px;}
-.info-note{background:var(--sage-50);border-left:3px solid var(--green);
-  border-radius:0 var(--r-sm) var(--r-sm) 0;padding:12px 16px;font-size:13px;color:var(--green-900);
-  line-height:1.55;margin-top:16px;}
-
-/* ── BUTTON ──────────────────────────────────────── */
-.btn-calc{width:100%;margin-top:22px;background:var(--green);color:#fff;border:none;border-radius:var(--r-sm);
-  padding:15px 24px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;gap:8px;box-shadow:0 4px 12px rgba(45,110,50,.3);transition:all .18s;
-  font-family:inherit;letter-spacing:.2px;}
-.btn-calc:hover{background:var(--green-dark);transform:translateY(-1px);box-shadow:0 6px 16px rgba(45,110,50,.38);}
-.btn-calc:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-
-/* ── RESULT ──────────────────────────────────────── */
-.result-header{background:var(--green-900);padding:24px;text-align:center;}
-.result-context{color:rgba(255,255,255,.7);font-size:12px;margin-bottom:12px;letter-spacing:.3px;}
-.result-transport-name{color:#fff;font-size:16px;font-weight:800;}
-.result-body{padding:28px 24px;text-align:center;}
-.big-price{font-size:52px;font-weight:900;color:var(--green);line-height:1;margin-bottom:10px;letter-spacing:-.02em;}
-.big-price.pay-on-delivery{font-size:32px;color:var(--warn);}
-.result-note{display:inline-block;background:var(--sage-50);border-radius:var(--r-sm);
-  padding:12px 20px;font-size:13px;color:var(--green-900);max-width:460px;line-height:1.6;}
-.result-note.warning{background:var(--warn-soft);color:#92400e;}
-.result-badge{display:inline-block;background:var(--warn);color:#fff;border-radius:6px;padding:3px 10px;
-  font-size:11px;font-weight:700;letter-spacing:.4px;margin-bottom:14px;text-transform:uppercase;}
-
-/* ── COMPARISON TABLE ────────────────────────────── */
-.table-header{padding:18px 22px 14px;border-bottom:1px solid var(--gray-100);
-  display:flex;align-items:baseline;gap:10px;}
-.table-header .title{font-weight:800;color:var(--green-900);font-size:15px;}
-.table-header .subtitle{font-size:12px;color:var(--gray-400);}
-.table-wrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:14px;}
-thead tr{background:var(--gray-50);}
-thead th{padding:10px 16px;color:var(--green-800);font-weight:800;font-size:11px;letter-spacing:.6px;
-  white-space:nowrap;text-transform:uppercase;}
-thead th:first-child{text-align:left;}
-thead th:not(:first-child){text-align:right;}
-tbody tr{border-bottom:1px solid var(--gray-100);transition:background .1s;}
-tbody tr:last-child{border-bottom:none;}
-tbody tr:hover{background:var(--gray-50);}
-tbody tr.selected{background:var(--sage-50)!important;}
-tbody tr.selected td:first-child{border-left:3px solid var(--green);}
-tbody tr:not(.selected) td:first-child{border-left:3px solid transparent;}
-tbody td{padding:13px 16px;}
-tbody td:first-child{color:var(--gray-800);}
-tbody tr.selected td:first-child{font-weight:700;color:var(--green-dark);}
-tbody td:not(:first-child){text-align:right;color:var(--gray-500);}
-tbody tr.selected td.cost-col{color:var(--green-dark);font-weight:800;font-size:15px;}
-td.cost-col{font-weight:700;color:var(--gray-800);}
-td.pay-on-delivery{color:var(--warn)!important;font-weight:700;}
-.badge-table{font-size:11px;background:var(--green);color:#fff;border-radius:4px;padding:2px 7px;
-  margin-left:8px;vertical-align:middle;}
-.badge-par{font-size:11px;background:var(--warn);color:#fff;border-radius:4px;padding:2px 7px;
-  margin-left:8px;vertical-align:middle;}
-
-/* ── SPINNER / LOADING ───────────────────────────── */
-.loading{text-align:center;padding:16px;color:var(--gray-400);font-size:13px;}
-.spinner{display:inline-block;width:16px;height:16px;border:2px solid var(--gray-200);
-  border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite;
-  vertical-align:middle;margin-right:6px;}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* ── HELP SECTION ────────────────────────────────── */
-.help-section{background:var(--white);border-radius:var(--r);box-shadow:var(--shadow);
-  padding:28px 24px;margin:0 auto 0;max-width:660px;text-align:center;border:1px solid var(--gray-200);}
-.help-icon{font-size:24px;margin-bottom:10px;color:var(--gray-400);}
-.help-title{font-size:15px;font-weight:700;color:var(--gray-900);margin-bottom:4px;}
-.help-sub{font-size:13px;color:var(--gray-500);margin-bottom:18px;}
-.btn-help{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:#fff;
-  border-radius:var(--r-sm);padding:13px 28px;font-size:14px;font-weight:700;text-decoration:none;
-  font-family:inherit;box-shadow:0 2px 8px rgba(0,131,62,.25);transition:all .18s;letter-spacing:.2px;}
-.btn-help:hover{background:var(--green-dark);transform:translateY(-1px);}
-
-/* ── FOOTER ──────────────────────────────────────── */
-.footer{background:var(--white);border-top:1px solid var(--gray-200);padding:20px 24px;
-  text-align:center;font-size:12px;color:var(--gray-400);line-height:1.9;margin-top:auto;}
-.footer strong{color:var(--gray-500);}
-.table-footer{padding:12px 0 16px;text-align:center;font-size:11px;color:var(--gray-400);}
-
-.hidden{display:none!important;}
-
-/* ── RESPONSIVE ──────────────────────────────────── */
-@media(max-width:520px){
-  .hero{padding:36px 16px 68px;}
-  .form-grid{grid-template-columns:1fr;}
-  .result-section{padding:0 12px 40px;}
+/* ── Header ── */
+.header {
+  display: flex; align-items: center; gap: 16px;
+  margin-bottom: 32px; padding-bottom: 24px;
+  border-bottom: 2px solid #e2ede7;
 }
+.logo-mark {
+  width: 48px; height: 48px; border-radius: 12px;
+  background: #00873e;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.logo-mark svg { width: 28px; height: 28px; fill: #fff; }
+.header-text .brand { font-size: 20px; font-weight: 800; color: #00873e; letter-spacing: -.4px; }
+.header-text .tagline { font-size: 12px; color: #718096; margin-top: 1px; }
+
+/* ── Steps ── */
+.steps {
+  display: flex; align-items: center; gap: 0;
+  margin-bottom: 28px;
+}
+.step {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; font-weight: 700; color: #a0aec0;
+  letter-spacing: .3px; text-transform: uppercase;
+}
+.step.active { color: #00873e; }
+.step.done { color: #68d391; }
+.step-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: #e2ede7; color: #a0aec0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; flex-shrink: 0;
+}
+.step.active .step-num { background: #00873e; color: #fff; }
+.step.done .step-num { background: #68d391; color: #fff; }
+.step-line { flex: 1; height: 2px; background: #e2ede7; margin: 0 8px; min-width: 20px; }
+.step-line.done { background: #68d391; }
+
+/* ── Cards ── */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,.06);
+  margin-bottom: 20px;
+  overflow: hidden;
+  border: 1px solid #eaf3ed;
+}
+.card-head {
+  background: #00873e;
+  padding: 16px 24px;
+  display: flex; align-items: center; gap: 10px;
+}
+.card-head .icon { font-size: 18px; }
+.card-head .title { color: #fff; font-size: 14px; font-weight: 700; }
+.card-head .sub { color: rgba(255,255,255,.7); font-size: 12px; margin-top: 1px; }
+.card-body { padding: 24px; }
+
+/* ── Autocomplete ── */
+.autocomplete-wrap { position: static; }
+label {
+  display: block; font-size: 13px; font-weight: 700;
+  color: #4a5568; margin-bottom: 7px; letter-spacing: .2px;
+}
+.input-icon-wrap { position: relative; }
+.input-icon {
+  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+  font-size: 16px; pointer-events: none;
+}
+input[type=text], select {
+  width: 100%; padding: 12px 14px 12px 40px;
+  font-size: 15px; font-family: inherit;
+  border: 2px solid #cbd5e0; border-radius: 10px;
+  outline: none; color: #1a202c; background: #fff;
+  transition: border-color .2s, box-shadow .2s;
+  appearance: none;
+}
+input[type=text]:focus, select:focus {
+  border-color: #00873e;
+  box-shadow: 0 0 0 3px rgba(0,135,62,.12);
+}
+input.error { border-color: #e53e3e !important; box-shadow: 0 0 0 3px rgba(229,62,62,.1) !important; }
+.err-msg { color: #e53e3e; font-size: 12px; margin-top: 5px; display: flex; align-items: center; gap: 4px; }
+
+.dropdown {
+  width: 100%; margin-top: 6px;
+  background: #fff; border: 2px solid #00873e; border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.10);
+  display: none;
+}
+.dropdown.open { display: block; }
+.dropdown-item {
+  padding: 11px 16px; font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid #f0f4f1;
+  transition: background .1s;
+}
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover, .dropdown-item.focused { background: #f0f7f2; }
+.dropdown-item .comuna-name { font-weight: 600; color: #1a202c; }
+.dropdown-item .courier-hint { font-size: 11px; color: #a0aec0; margin-top: 1px; }
+.dropdown-item.no-service .comuna-name { color: #a0aec0; }
+.dropdown-empty { padding: 16px; text-align: center; color: #a0aec0; font-size: 14px; }
+
+/* ── Transport chips ── */
+.transport-section { margin-top: 20px; }
+.transport-label { font-size: 13px; font-weight: 700; color: #4a5568; margin-bottom: 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 8px 16px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  border: 2px solid #e2ede7; background: #f8fbf9; color: #4a5568;
+  transition: all .15s; user-select: none;
+  display: flex; align-items: center; gap: 6px;
+}
+.chip:hover { border-color: #00873e; color: #00873e; background: #f0f7f2; }
+.chip.selected { background: #00873e; border-color: #00873e; color: #fff; }
+.chip.pay-on-delivery { border-color: #f6ad55; color: #c05621; background: #fffaf0; }
+.chip.pay-on-delivery.selected { background: #dd6b20; border-color: #dd6b20; color: #fff; }
+.chip-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: .6; }
+.no-transport {
+  padding: 14px 18px; border-radius: 10px;
+  background: #fff5f5; border: 1px solid #fed7d7;
+  font-size: 13px; color: #c53030;
+  display: flex; align-items: center; gap: 8px;
+}
+.disabled-notice {
+  padding: 14px 18px; border-radius: 10px;
+  background: #fffbea; border: 1px solid #fbd38d;
+  font-size: 13px; color: #7b341e;
+  display: flex; align-items: center; gap: 8px;
+}
+
+/* ── Form grid ── */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 20px;
+}
+@media (max-width: 500px) {
+  .form-grid { grid-template-columns: 1fr; }
+}
+.select-wrap { position: relative; }
+.select-wrap::after {
+  content: '▾'; position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%); pointer-events: none;
+  color: #718096; font-size: 13px;
+}
+.select-wrap select { padding-left: 14px; }
+
+/* ── Button ── */
+.btn-calc {
+  width: 100%; margin-top: 22px;
+  padding: 15px; font-size: 15px; font-weight: 800;
+  background: #00873e; color: #fff;
+  border: none; border-radius: 10px; cursor: pointer;
+  letter-spacing: .5px; font-family: inherit;
+  transition: background .2s, transform .1s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-calc:hover { background: #006b30; }
+.btn-calc:active { transform: scale(.98); }
+.btn-calc:disabled { background: #a0aec0; cursor: not-allowed; transform: none; }
+
+/* ── Result ── */
+.result-header {
+  background: linear-gradient(135deg, #00873e 0%, #006b30 100%);
+  padding: 24px; text-align: center;
+}
+.result-context { color: rgba(255,255,255,.8); font-size: 12px; margin-bottom: 12px; letter-spacing: .3px; }
+.result-transport-name { color: #fff; font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.result-body { padding: 28px 24px; text-align: center; }
+.big-price { font-size: 56px; font-weight: 900; color: #00873e; line-height: 1; margin-bottom: 10px; }
+.big-price.pay-on-delivery { font-size: 34px; }
+.result-note {
+  display: inline-block; background: #f0f7f2; border-radius: 10px;
+  padding: 12px 20px; font-size: 13px; color: #276749; max-width: 460px; line-height: 1.6;
+}
+.result-note.warning { background: #fffbea; color: #7b341e; }
+.result-badge {
+  display: inline-block; background: #00873e; color: #fff;
+  border-radius: 6px; padding: 3px 10px; font-size: 11px;
+  font-weight: 700; letter-spacing: .4px; margin-bottom: 14px;
+}
+
+/* ── Comparison table ── */
+.table-header {
+  padding: 16px 22px 14px;
+  border-bottom: 1px solid #eaf3ed;
+  display: flex; align-items: baseline; gap: 10px;
+}
+.table-header .title { font-weight: 800; color: #00873e; font-size: 15px; }
+.table-header .subtitle { font-size: 12px; color: #a0aec0; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+thead tr { background: #f4f9f6; }
+thead th {
+  padding: 10px 16px; color: #00873e; font-weight: 800;
+  font-size: 11px; letter-spacing: .6px; white-space: nowrap;
+  text-transform: uppercase;
+}
+thead th:first-child { text-align: left; }
+thead th:not(:first-child) { text-align: right; }
+tbody tr { border-bottom: 1px solid #f0f4f1; transition: background .1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #f9fcfa; }
+tbody tr.selected { background: #f0f7f2 !important; }
+tbody tr.selected td:first-child { border-left: 3px solid #00873e; }
+tbody tr:not(.selected) td:first-child { border-left: 3px solid transparent; }
+tbody td { padding: 12px 16px; }
+tbody td:first-child { color: #1a202c; }
+tbody tr.selected td:first-child { font-weight: 700; color: #00873e; }
+tbody td:not(:first-child) { text-align: right; color: #718096; }
+tbody tr.selected td.cost-col { color: #00873e; font-weight: 800; font-size: 15px; }
+td.cost-col { font-weight: 700; color: #1a202c; }
+td.pay-on-delivery { color: #dd6b20 !important; font-weight: 700; }
+.badge-table { font-size: 11px; background: #00873e; color: #fff; border-radius: 4px; padding: 2px 7px; margin-left: 8px; vertical-align: middle; }
+.badge-par { font-size: 11px; background: #dd6b20; color: #fff; border-radius: 4px; padding: 2px 7px; margin-left: 8px; vertical-align: middle; }
+
+/* ── Info notes ── */
+.info-note {
+  background: #f0f7f2; border-left: 3px solid #00873e;
+  border-radius: 0 8px 8px 0; padding: 12px 16px;
+  font-size: 13px; color: #276749; line-height: 1.5; margin-top: 16px;
+}
+.warn-note {
+  background: #fffbea; border-left: 3px solid #f6ad55;
+  border-radius: 0 8px 8px 0; padding: 12px 16px;
+  font-size: 13px; color: #7b341e; line-height: 1.5; margin-top: 12px;
+}
+
+/* ── Footer ── */
+.footer { text-align: center; font-size: 11px; color: #cbd5e0; margin-top: 12px; }
+
+/* ── Hidden ── */
+.hidden { display: none !important; }
+
+/* ── Loading ── */
+.loading { text-align: center; padding: 16px; color: #a0aec0; font-size: 13px; }
+.spinner {
+  display: inline-block; width: 16px; height: 16px;
+  border: 2px solid #e2ede7; border-top-color: #00873e;
+  border-radius: 50%; animation: spin .7s linear infinite;
+  vertical-align: middle; margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<!-- HEADER -->
-<header class="header">
-  <div class="header-inner">
-    <div class="brand">
-      <div class="brand-logo"><img src="https://biogreenchile.com/wp-content/uploads/2026/03/LOGO-BIOGREEN-2024_Mesa-de-trabajo-1-e1719951255289.webp" alt="Biogreen" style="height:56px;width:auto;object-fit:contain;"/></div>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A4.49 4.49 0 0 0 8 20C19 20 22 3 22 3c-1 2-8 2-13 7.35C7.4 8.6 6 6.5 6 6.5l1.9 3.7C9.3 9.1 13.6 8 17 8z"/>
+      </svg>
     </div>
-    <span class="header-pill">Calculadora de Flete</span>
+    <div class="header-text">
+      <div class="brand">biogreen</div>
+      <div class="tagline">Calculadora de flete · Chile</div>
+    </div>
   </div>
-</header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="deco-shape deco-cyan" style="width:220px;height:130px;top:-30px;right:10%;transform:rotate(-8deg);"></div>
-  <div class="deco-shape deco-lime" style="width:160px;height:110px;bottom:-20px;left:8%;transform:rotate(8deg);"></div>
-  <div class="hero-eyebrow">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-      <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
-    </svg>
-    Calculadora de flete
-  </div>
-  <h1 class="hero-title">¿Cuánto cuesta enviar tu pedido?</h1>
-  <p class="hero-sub">Elige tu comuna y descubre el costo de flete en segundos.</p>
-
-  <div class="steps-bar" id="steps-bar">
+  <!-- Steps -->
+  <div class="steps" id="steps-bar">
     <div class="step active" id="step1-ind"><div class="step-num">1</div> <span>Tu comuna</span></div>
     <div class="step-line" id="line1"></div>
     <div class="step" id="step2-ind"><div class="step-num">2</div> <span>Tu pedido</span></div>
     <div class="step-line" id="line2"></div>
     <div class="step" id="step3-ind"><div class="step-num">3</div> <span>Tu flete</span></div>
   </div>
-</section>
 
-<!-- RESULTADO -->
-<section class="result-section">
-  <div class="result-inner">
-
-    <!-- Card 1: Comuna -->
-    <div class="card" id="card-comuna">
-      <div class="card-head">
-        <div class="icon">📍</div>
-        <div>
-          <div class="title">¿En qué comuna vives?</div>
-          <div class="sub">Busca tu comuna para ver los transportes disponibles</div>
-        </div>
+  <!-- Card 1: Comuna -->
+  <div class="card" id="card-comuna">
+    <div class="card-head">
+      <div class="icon">📍</div>
+      <div>
+        <div class="title">¿En qué comuna vives?</div>
+        <div class="sub">Busca tu comuna para ver los transportes disponibles</div>
       </div>
-      <div class="card-body">
-        <div id="loading-comunas" class="loading">
-          <span class="spinner"></span> Cargando comunas...
-        </div>
-        <div id="comunas-ready" class="hidden">
-          <label for="comuna-input">Escribe el nombre de tu comuna</label>
-          <div class="autocomplete-wrap">
-            <div class="input-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="text" id="comuna-input" placeholder="Ej: Santiago, Temuco, Viña del Mar..." autocomplete="off"/>
-            </div>
-            <div class="dropdown" id="dropdown"></div>
+    </div>
+    <div class="card-body">
+      <div id="loading-comunas" class="loading">
+        <span class="spinner"></span> Cargando comunas...
+      </div>
+      <div id="comunas-ready" class="hidden">
+        <label for="comuna-input">Escribe el nombre de tu comuna</label>
+        <div class="autocomplete-wrap">
+          <div class="input-icon-wrap">
+            <span class="input-icon">🔍</span>
+            <input type="text" id="comuna-input" placeholder="Ej: Santiago, Temuco, Viña del Mar..." autocomplete="off"/>
           </div>
-          <p class="err-msg hidden" id="err-comuna">⚠ Selecciona una comuna válida de la lista.</p>
+          <div class="dropdown" id="dropdown"></div>
         </div>
+        <p class="err-msg hidden" id="err-comuna">⚠ Selecciona una comuna válida de la lista.</p>
+      </div>
 
-        <!-- Transport chips (shown after commune selection) -->
-        <div id="transport-section" class="transport-section hidden">
-          <div class="transport-label">Transportes disponibles en <strong id="comuna-selected-name"></strong></div>
-          <div class="chips" id="chips"></div>
-          <div class="info-note" id="note-transporte" style="display:none;"></div>
-        </div>
+      <!-- Transport chips (shown after commune selection) -->
+      <div id="transport-section" class="transport-section hidden">
+        <div class="transport-label">Transportes disponibles en <strong id="comuna-selected-name"></strong></div>
+        <div class="chips" id="chips"></div>
+        <div class="info-note" id="note-transporte" style="display:none;"></div>
       </div>
     </div>
-
-    <!-- Card 2: Pedido (hidden until transport selected) -->
-    <div class="card hidden" id="card-pedido">
-      <div class="card-head">
-        <div class="icon">🛒</div>
-        <div>
-          <div class="title">Datos de tu pedido</div>
-          <div class="sub">Ingresa el valor y tu categoría</div>
-        </div>
-      </div>
-      <div class="card-body">
-        <div class="form-grid">
-          <div>
-            <label for="valor">Valor de compra (CLP)</label>
-            <div class="input-icon-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              <input type="text" id="valor" inputmode="numeric" placeholder="Ej: $150.000" autocomplete="off"/>
-            </div>
-            <p class="err-msg hidden" id="err-valor">⚠ Ingresa el valor de tu compra.</p>
-          </div>
-          <div>
-            <label for="nivel">Tu nivel</label>
-            <div class="select-wrap">
-              <select id="nivel">
-                <option value="DBR">Distribuidor</option>
-                <option value="DBA">Distribuidor Plus</option>
-                <option value="LID">Líder</option>
-                <option value="COR">Coordinador</option>
-                <option value="DIR">Director</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="warn-note">
-          ⚠️ <strong>Importante:</strong> Si realizas tu pedido antes de las 12:00, será despachado el día hábil siguiente.
-        </div>
-
-        <button class="btn-calc" id="btn-calcular" onclick="calcular()">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-          Calcular flete
-        </button>
-      </div>
-    </div>
-
-    <!-- Card 3: Resultado -->
-    <div class="card hidden" id="card-resultado">
-      <div class="result-header">
-        <div class="result-context" id="res-context"></div>
-        <div class="result-transport-name" id="res-transport"></div>
-      </div>
-      <div class="result-body" id="res-body"></div>
-    </div>
-
-    <!-- Card 4: Comparativa -->
-    <div class="card hidden" id="card-tabla">
-      <div class="table-header">
-        <span class="title">Comparativa de transportes</span>
-        <span class="subtitle" id="tabla-subtitle"></span>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Transporte</th>
-              <th>Costo flete</th>
-            </tr>
-          </thead>
-          <tbody id="tabla-body"></tbody>
-        </table>
-      </div>
-      <p class="table-footer">Valores referenciales · Uso exclusivo interno</p>
-    </div>
-
   </div>
-</section>
 
-<div class="help-section">
-  <div class="help-icon">💬</div>
-  <div class="help-title">¿Tienes alguna duda o necesitas consultar algo más?</div>
-  <div class="help-sub">Nuestro equipo está listo para ayudarte.</div>
-  <a href="https://biogreenchile.freshdesk.com/es-LA/support/tickets/new" target="_blank" rel="noopener" class="btn-help">
-    📋 &nbsp;Envíanos una solicitud de servicio
-  </a>
+  <!-- Card 2: Pedido (hidden until transport selected) -->
+  <div class="card hidden" id="card-pedido">
+    <div class="card-head">
+      <div class="icon">🛒</div>
+      <div>
+        <div class="title">Datos de tu pedido</div>
+        <div class="sub">Ingresa el valor y tu categoría</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-grid">
+        <div>
+          <label for="valor">Valor de compra (CLP)</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">💰</span>
+            <input type="text" id="valor" inputmode="numeric" placeholder="Ej: $150.000" autocomplete="off"/>
+          </div>
+          <p class="err-msg hidden" id="err-valor">⚠ Ingresa el valor de tu compra.</p>
+        </div>
+        <div>
+          <label for="nivel">Tu nivel</label>
+          <div class="select-wrap">
+            <select id="nivel">
+              <option value="DBR">Distribuidor</option>
+              <option value="DBA">Distribuidor Plus</option>
+              <option value="LID">Líder</option>
+              <option value="COR">Coordinador</option>
+              <option value="DIR">Director</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="warn-note">
+        ⚠️ <strong>Importante:</strong> Si realizas tu pedido antes de las 12:00, será despachado el día hábil siguiente.
+      </div>
+
+      <button class="btn-calc" id="btn-calcular" onclick="calcular()">
+        🚚 CALCULAR FLETE
+      </button>
+    </div>
+  </div>
+
+  <!-- Card 3: Resultado -->
+  <div class="card hidden" id="card-resultado">
+    <div class="result-header">
+      <div class="result-context" id="res-context"></div>
+      <div class="result-transport-name" id="res-transport"></div>
+    </div>
+    <div class="result-body" id="res-body"></div>
+  </div>
+
+  <!-- Card 4: Comparativa -->
+  <div class="card hidden" id="card-tabla">
+    <div class="table-header">
+      <span class="title">Comparativa de transportes</span>
+      <span class="subtitle" id="tabla-subtitle"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Transporte</th>
+            <th>Costo flete</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body"></tbody>
+      </table>
+    </div>
+    <p class="footer" style="padding:12px 0 16px;">Valores referenciales · Uso exclusivo interno</p>
+  </div>
+
+  <!-- Ayuda -->
+  <div class="card" style="text-align:center; padding: 28px 24px; margin-top: 8px;">
+    <div style="font-size:24px; margin-bottom:10px;">💬</div>
+    <div style="font-size:15px; font-weight:700; color:#1a202c; margin-bottom:6px;">¿Tienes alguna duda o necesitas consultar algo más?</div>
+    <div style="font-size:13px; color:#718096; margin-bottom:20px;">Nuestro equipo está listo para ayudarte.</div>
+    <a href="https://biogreenchile.freshdesk.com/es-LA/support/tickets/new" target="_blank"
+       style="display:inline-block; background:#00873e; color:#fff; font-weight:700; font-size:14px;
+              padding:13px 28px; border-radius:10px; text-decoration:none; font-family:inherit;
+              transition:background .2s; letter-spacing:.3px;">
+      📋 Envíanos una solicitud de servicio
+    </a>
+  </div>
+
 </div>
 
-<footer class="footer">
-  <p>© 2026 <strong>Biogreen Chile</strong> · Todos los derechos reservados</p>
-  <p>Valores referenciales de flete · Uso exclusivo interno</p>
-</footer>
-
 <script>
-/* ── Transport data (matriz de fletes actualizada) ── */
+/* ── Transport data ── */
 const TRANSPORTES = [
-  { id:'ALAS',            nombre:'ALAS',                               minimo:7990,  par:false, tasas:{DBR:.0109,DBA:.0109,LID:.0169,COR:.0169,DIR:.0259} },
-  { id:'ALAS_MAG',        nombre:'ALAS (Magallanes - Aysén)',          minimo:10990, par:false, tasas:{DBR:.0200,DBA:.0200,LID:.0300,COR:.0300,DIR:.0400} },
-  { id:'BLUEXPRESS_MAG',  nombre:'BLUE EXPRESS (Magallanes - Aysén)',  minimo:11990, par:false, tasas:{DBR:.0290,DBA:.0290,LID:.0300,COR:.0300,DIR:.0400} },
-  { id:'BLUEXPRESS',      nombre:'BLUEXPRESS',                         minimo:8990,  par:false, tasas:{DBR:.0159,DBA:.0159,LID:.0189,COR:.0189,DIR:.0289} },
-  { id:'CACEM',           nombre:'CACEM',                              minimo:1,     par:true,  tasas:null },
-  { id:'GLOBAL',          nombre:'GLOBAL',                             minimo:5990,  par:false, tasas:{DBR:.0099,DBA:.0099,LID:.0149,COR:.0149,DIR:.0189} },
-  { id:'GLOBAL2',         nombre:'GLOBAL (Lampa - Colina)',            minimo:7990,  par:false, tasas:{DBR:.0110,DBA:.0110,LID:.0169,COR:.0169,DIR:.0250} },
-  { id:'MARDAN',          nombre:'MARDAN',                             minimo:1,     par:true,  tasas:null },
-  { id:'MAREXPRESS',      nombre:'MAREXPRESS',                         minimo:1,     par:true,  tasas:null },
-  { id:'STARKEN',         nombre:'STARKEN',                            minimo:9990,  par:false, tasas:{DBR:.0239,DBA:.0239,LID:.0309,COR:.0309,DIR:.0409} },
+  { id:'ALAS',        nombre:'ALAS',                               minimo:7990,  par:false, tasas:{DBR:.0109,DBA:.0109,LID:.0169,COR:.0169,DIR:.0259} },
+  { id:'BLUEXPRESS',  nombre:'BLUEXPRESS',                         minimo:8990,  par:false, tasas:{DBR:.0159,DBA:.0159,LID:.0189,COR:.0189,DIR:.0289} },
+  { id:'CACEM',       nombre:'CACEM',                              minimo:1,     par:true,  tasas:null },
+  { id:'GLOBAL',      nombre:'GLOBAL',                             minimo:5990,  par:false, tasas:{DBR:.0099,DBA:.0099,LID:.0149,COR:.0149,DIR:.0189} },
+  { id:'GLOBAL2',     nombre:'GLOBAL (Colina-Lampa)',               minimo:7990,  par:false, tasas:{DBR:.0110,DBA:.0110,LID:.0169,COR:.0169,DIR:.0250} },
+  { id:'MARDAN',      nombre:'MARDAN',                             minimo:1,     par:true,  tasas:null },
+  { id:'MAREXPRESS',  nombre:'MAREXPRESS',                         minimo:1,     par:true,  tasas:null },
+  { id:'STARKEN',     nombre:'STARKEN',                            minimo:8990,  par:false, tasas:{DBR:.0215,DBA:.0215,LID:.0278,COR:.0278,DIR:.0368} },
+  { id:'TRAPANANDA',  nombre:'TRAPANANDA (Solo con convenio)',      minimo:1,     par:true,  tasas:null },
 ];
 
 const NIVEL_LABEL = {DBR:'Distribuidor',DBA:'Distribuidor Plus',LID:'Líder',COR:'Coordinador',DIR:'Director'};
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxnB8RhEI8XWuCODDvbkMV3HCL9enCeubwohpMlQXdrAYQcjWLNS-8XVEmHdwBjaNGPEA/exec';
+const COLINA_LAMPA = ['COLINA','LAMPA'];
 
 /* ── State ── */
 let allComunas   = [];  // [{nombre, couriers:[], habilitado}]
@@ -416,26 +439,22 @@ let dropdownFocusIdx = -1;
 /* ── Helpers ── */
 function clp(n){ return '$'+Math.round(n).toLocaleString('es-CL'); }
 
-function parseCouriersToIds(str){
+function parseCouriersToIds(str, comunaNombre){
   if(!str) return [];
+  const s = str.toUpperCase();
   const found = [];
-
-  // El texto puede traer varios couriers separados por coma, cada uno con su propio sufijo regional
-  str.split(',').forEach(part => {
-    const p = part.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-    const regional = p.includes('MAGALLANES') || p.includes('AYSEN');
-    const lampaColina = p.includes('LAMPA') || p.includes('COLINA');
-
-    if(p.includes('STARKEN'))                              found.push('STARKEN');
-    else if(p.includes('BLUEXPRESS') || p.includes('BLUE EXPRESS')) found.push(regional ? 'BLUEXPRESS_MAG' : 'BLUEXPRESS');
-    else if(p.includes('ALAS'))                            found.push(regional ? 'ALAS_MAG' : 'ALAS');
-    else if(p.includes('CACEM'))                            found.push('CACEM');
-    else if(p.includes('MAREXPRESS'))                       found.push('MAREXPRESS');
-    else if(p.includes('MARDAN'))                           found.push('MARDAN');
-    else if(p.includes('GLOBAL'))                           found.push(lampaColina ? 'GLOBAL2' : 'GLOBAL');
-  });
-
-  return [...new Set(found)];
+  if(s.includes('STARKEN'))    found.push('STARKEN');
+  if(s.includes('BLUEXPRESS')) found.push('BLUEXPRESS');
+  if(s.includes('ALAS'))       found.push('ALAS');
+  if(s.includes('CACEM'))      found.push('CACEM');
+  if(s.includes('MAREXPRESS')) found.push('MAREXPRESS');
+  if(s.includes('MARDAN'))     found.push('MARDAN');
+  if(s.includes('TRAPANANDA')) found.push('TRAPANANDA');
+  if(s.includes('GLOBAL')){
+    const cn = (comunaNombre||'').toUpperCase().trim();
+    found.push(COLINA_LAMPA.includes(cn) ? 'GLOBAL2' : 'GLOBAL');
+  }
+  return found;
 }
 
 function calcFlete(t, nk, valor){
@@ -445,575 +464,279 @@ function calcFlete(t, nk, valor){
   return { cost, minApplied: cost === t.minimo, tasa: t.tasas[nk], pct };
 }
 
-const COMUNAS_DATA=[
-{nombre:"ARICA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CAMARONES",couriers:"",habilitado:"N"},
-{nombre:"PUTRE",couriers:"",habilitado:"N"},
-{nombre:"GENERAL LAGOS",couriers:"",habilitado:"N"},
-{nombre:"IQUIQUE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ALTO HOSPICIO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"POZO ALMONTE",couriers:"STARKEN (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CAMIÑA",couriers:"",habilitado:"N"},
-{nombre:"COLCHANE",couriers:"",habilitado:"N"},
-{nombre:"HUARA",couriers:"ALAS (0 horas)",habilitado:"S"},
-{nombre:"PICA",couriers:"ALAS (0 horas)",habilitado:"S"},
-{nombre:"ANTOFAGASTA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MEJILLONES",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SIERRA GORDA",couriers:"ALAS (0 horas)",habilitado:"S"},
-{nombre:"TALTAL",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CALAMA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"OLLAGÜE",couriers:"",habilitado:"N"},
-{nombre:"SAN PEDRO DE ATACAMA",couriers:"STARKEN (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TOCOPILLA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MARÍA ELENA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COPIAPÓ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CALDERA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TIERRA AMARILLA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHAÑARAL",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"DIEGO DE ALMAGRO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VALLENAR",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ALTO DEL CARMEN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"FREIRINA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"HUASCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LA SERENA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COQUIMBO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ANDACOLLO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LA HIGUERA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PAIHUANO",couriers:"",habilitado:"N"},
-{nombre:"VICUÑA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ILLAPEL",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CANELA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LOS VILOS",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SALAMANCA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"OVALLE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COMBARBALÁ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MONTE PATRIA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PUNITAQUI",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RÍO HURTADO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VALPARAÍSO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CASABLANCA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CONCÓN",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"JUAN FERNÁNDEZ",couriers:"",habilitado:"N"},
-{nombre:"PUCHUNCAVÍ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUINTERO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VIÑA DEL MAR",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ISLA DE PASCUA",couriers:"",habilitado:"N"},
-{nombre:"LOS ANDES",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CALLE LARGA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RINCONADA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN ESTEBAN",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LA LIGUA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CABILDO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PAPUDO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PETORCA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ZAPALLAR",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUILLOTA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LA CALERA",couriers:"STARKEN (0 horas)",habilitado:"S"},
-{nombre:"HIJUELAS",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LA CRUZ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"NOGALES",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN ANTONIO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ALGARROBO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CARTAGENA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"EL QUISCO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"EL TABO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SANTO DOMINGO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN FELIPE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CATEMU",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LLAY-LLAY",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PANQUEHUE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PUTAENDO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SANTA MARÍA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"N"},
-{nombre:"LIMACHE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUILPUÉ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VILLA ALEMANA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"OLMUÉ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RANCAGUA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CODEGUA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COINCO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COLTAUCO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"DOÑIHUE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"GRANEROS",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LAS CABRAS",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MACHALÍ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MALLOA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MOSTAZAL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"OLIVAR",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PEUMO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PICHIDEGUA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUINTA DE TILCOCO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RENGO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"REQUÍNOA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN VICENTE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PICHILEMU",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LA ESTRELLA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LITUECHE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MARCHIGÜE",couriers:"STARKEN (0 horas), ALAS (0 horas), BLUEXPRESS (0 horas)",habilitado:"S"},
-{nombre:"NAVIDAD",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PAREDONES",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN FERNANDO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHÉPICA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHIMBARONGO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LOLOL",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"NANCAGUA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PALMILLA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PERALILLO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PLACILLA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PUMANQUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SANTA CRUZ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TALCA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CONSTITUCIÓN",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CUREPTO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"EMPEDRADO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MAULE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PELARCO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PENCAHUE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RÍO CLARO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN CLEMENTE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN RAFAEL",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CAUQUENES",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHANCO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PELLUHUE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CURICÓ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"HUALAÑÉ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LICANTÉN",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MOLINA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RAUCO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ROMERAL",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAGRADA FAMILIA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TENO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VICHUQUÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LINARES",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COLBÚN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LONGAVÍ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PARRAL",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RETIRO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN JAVIER",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VILLA ALEGRE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"YERBAS BUENAS",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CONCEPCIÓN",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CORONEL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHIGUAYANTE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"FLORIDA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"HUALQUI",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LOTA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PENCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN PEDRO DE LA PAZ",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SANTA JUANA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TALCAHUANO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TOMÉ",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"HUALPÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LEBU",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ARAUCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CAÑETE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CONTULMO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CURANILAHUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LOS ALAMOS",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TIRÚA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LOS ANGELES",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ANTUCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CABRERO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LAJA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MULCHÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"NACIMIENTO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"NEGRETE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUILACO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUILLECO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN ROSENDO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SANTA BÁRBARA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TUCAPEL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"YUMBEL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ALTO BIOBÍO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHILLÁN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"BULNES",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COBQUECURA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COELEMU",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COIHUECO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHILLÁN VIEJO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"EL CARMEN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"NINHUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ÑIQUÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PEMUCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PINTO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PORTEZUELO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUILLÓN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUIRIHUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RÁNQUIL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN CARLOS",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN FABIÁN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN IGNACIO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN NICOLÁS",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TREGUACO",couriers:"ALAS (0 horas)",habilitado:"S"},
-{nombre:"YUNGAY",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TEMUCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"CARAHUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CUNCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CURARREHUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"FREIRE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"GALVARINO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"GORBEA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LAUTARO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LONCOCHE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MELIPEUCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"NUEVA IMPERIAL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PADRE LAS CASAS",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PERQUENCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PITRUFQUÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PUCÓN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"SAAVEDRA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TEODORO SCHMIDT",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TOLTÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VILCÚN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VILLARRICA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"CHOLCHOL",couriers:"ALAS (0 horas)",habilitado:"S"},
-{nombre:"ANGOL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COLLIPULLI",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CURACAUTÍN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ERCILLA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LONQUIMAY",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LOS SAUCES",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LUMACO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PURÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RENAICO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TRAIGUÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VICTORIA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"VALDIVIA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CORRAL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LANCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LOS LAGOS",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MÁFIL",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MARIQUINA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"PAILLACO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PANGUIPULLI",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LA UNIÓN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"FUTRONO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LAGO RANCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"RÍO BUENO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PUERTO MONTT",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"CALBUCO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COCHAMÓ",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"FRESIA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"FRUTILLAR",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"LOS MUERMOS",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"LLANQUIHUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MAULLÍN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PUERTO VARAS",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"CASTRO",couriers:"BLUEXPRESS (0 horas), MAREXPRESS (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"ANCUD",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHONCHI",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CURACO DE VÉLEZ",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"DALCAHUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PUQUELDÓN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUEILÉN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUELLÓN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), MAREXPRESS (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"QUEMCHI",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"QUINCHAO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"OSORNO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"PUERTO OCTAY",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PURRANQUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"PUYEHUE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas), CACEM (PAGO FLETE AL RECIBIR) (0 horas)",habilitado:"S"},
-{nombre:"RÍO NEGRO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN JUAN DE LA COSTA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN PABLO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CHAITÉN",couriers:"BLUEXPRESS (0 horas)",habilitado:"S"},
-{nombre:"FUTALEUFÚ",couriers:"BLUEXPRESS (0 horas)",habilitado:"S"},
-{nombre:"HUALAIHUÉ",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PALENA",couriers:"BLUEXPRESS (0 horas), ALAS (MAGALLANES- AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"COYHAIQUE",couriers:"CACEM (PAGO FLETE AL RECIBIR) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"LAGO VERDE",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"AYSéN",couriers:"BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"CISNES",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"GUAITECAS",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"COCHRANE",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"O'HIGGINS",couriers:"",habilitado:"N"},
-{nombre:"TORTEL",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"CHILE CHICO",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"RÍO IBÁÑEZ",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"PUNTA ARENAS",couriers:"MARDAN (PAGO FLETE AL RECIBIR) (0 horas), ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"LAGUNA BLANCA",couriers:"",habilitado:"N"},
-{nombre:"RÍO VERDE",couriers:"",habilitado:"N"},
-{nombre:"SAN GREGORIO",couriers:"",habilitado:"N"},
-{nombre:"CABO DE HORNOS",couriers:"",habilitado:"N"},
-{nombre:"ANTÁRTICA",couriers:"",habilitado:"N"},
-{nombre:"PORVENIR",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"PRIMAVERA",couriers:"",habilitado:"N"},
-{nombre:"TIMAUKEL",couriers:"",habilitado:"N"},
-{nombre:"NATALES",couriers:"ALAS (MAGALLANES- AYSEN) (0 horas), BLUE EXPRESS ( MAGALLANES - AYSEN) (0 horas)",habilitado:"S"},
-{nombre:"TORRES DEL PAINE",couriers:"",habilitado:"N"},
-{nombre:"SANTIAGO",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"CERRILLOS",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"CERRO NAVIA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"CONCHALÍ",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"EL BOSQUE",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"ESTACIÓN CENTRAL",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"HUECHURABA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"INDEPENDENCIA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LA CISTERNA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LA FLORIDA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LA GRANJA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LA PINTANA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LA REINA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LAS CONDES",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LO BARNECHEA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LO ESPEJO",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"LO PRADO",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"MACUL",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"MAIPÚ",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"ÑUÑOA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"PEDRO AGUIRRE CERDA",couriers:"ALAS (0 horas), GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"PEÑALOLÉN",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"PROVIDENCIA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"PUDAHUEL",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"QUILICURA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"QUINTA NORMAL",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"RECOLETA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"RENCA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas), GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"SAN JOAQUÍN",couriers:"ALAS (0 horas), GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"SAN MIGUEL",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"SAN RAMÓN",couriers:"ALAS (0 horas), GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"VITACURA",couriers:"GLOBAL (0 horas)",habilitado:"S"},
-{nombre:"PUENTE ALTO",couriers:"ALAS (0 horas), GLOBAL (0 horas), BLUEXPRESS (0 horas), STARKEN (0 horas)",habilitado:"S"},
-{nombre:"PIRQUE",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN JOSÉ DE MAIPO",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"COLINA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas), GLOBAL (LAMPA - COLINA) (0 horas)",habilitado:"S"},
-{nombre:"LAMPA",couriers:"STARKEN (0 horas), BLUEXPRESS (0 horas), ALAS (0 horas), GLOBAL (LAMPA - COLINA) (0 horas)",habilitado:"S"},
-{nombre:"TIL TIL",couriers:"ALAS (0 horas), STARKEN (0 horas), BLUEXPRESS (0 horas), GLOBAL (LAMPA - COLINA) (0 horas)",habilitado:"S"},
-{nombre:"SAN BERNARDO",couriers:"ALAS (0 horas), BLUEXPRESS (0 horas)",habilitado:"S"},
-{nombre:"BUIN",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CALERA DE TANGO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PAINE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MELIPILLA",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ALHUÉ",couriers:"BLUEXPRESS (0 horas)",habilitado:"S"},
-{nombre:"CURACAVÍ",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"MARÍA PINTO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"SAN PEDRO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"TALAGANTE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"EL MONTE",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"ISLA DE MAIPO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PADRE HURTADO",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"PEÑAFLOR",couriers:"BLUEXPRESS (0 horas), ALAS (0 horas)",habilitado:"S"},
-{nombre:"CAQUENA",couriers:"",habilitado:"N"},
-{nombre:"VISVIRI",couriers:"",habilitado:"N"},
-{nombre:"PEULLA",couriers:"",habilitado:"N"},
-{nombre:"BAHIA MURTA",couriers:"",habilitado:"N"},
-{nombre:"CALETA ANDRADE",couriers:"",habilitado:"N"},
-{nombre:"GUADAL",couriers:"",habilitado:"N"},
-{nombre:"LA JUNTA",couriers:"",habilitado:"N"},
-{nombre:"LA TAPERA",couriers:"",habilitado:"N"},
-{nombre:"MELINKA",couriers:"",habilitado:"N"},
-{nombre:"PUERTO AGUIRRE",couriers:"",habilitado:"N"},
-{nombre:"PUERTO TRANQUILO",couriers:"",habilitado:"N"},
-{nombre:"PUYUHUAPI",couriers:"",habilitado:"N"},
-{nombre:"VILLA AMENGUAL",couriers:"",habilitado:"N"},
-{nombre:"VILLA CERRO CASTILLO",couriers:"",habilitado:"N"},
-{nombre:"VILLA MANIHUALES",couriers:"",habilitado:"N"},
-{nombre:"PUERTO WILLIAMS",couriers:"",habilitado:"N"}
-];
+/* ── Load comunas from Apps Script ── */
+async function loadComunas(){
+  try {
+    const res  = await fetch(APPS_SCRIPT_URL);
+    const data = await res.json();
 
-/* ── Normalize for search ── */
-function norm(s){ return s.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+    allComunas = data.map(r => ({
+      nombre:     (r.nombre || '').trim(),
+      ids:        parseCouriersToIds(r.couriers || '', r.nombre),
+      habilitado: (r.habilitado || 'N').toString().trim().toUpperCase()
+    })).filter(c => c.nombre);
+
+    document.getElementById('loading-comunas').classList.add('hidden');
+    document.getElementById('comunas-ready').classList.remove('hidden');
+  } catch(e){
+    document.getElementById('loading-comunas').innerHTML = '⚠ No se pudo cargar la lista de comunas. Recarga la página.';
+  }
+}
 
 /* ── Autocomplete ── */
+const input    = document.getElementById('comuna-input');
+const dropdown = document.getElementById('dropdown');
+
 function getMatches(q){
-  const nq = norm(q);
-  return allComunas.filter(c => norm(c.nombre).includes(nq)).slice(0,10);
+  if(!q) return [];
+  const q2 = q.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  return allComunas.filter(c => {
+    const n = c.nombre.toUpperCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    return n.includes(q2);
+  }).slice(0, 30);
 }
 
-function renderDropdown(matches, q){
-  const dd = document.getElementById('dropdown');
+function renderDropdown(matches){
+  dropdown.innerHTML = '';
   if(!matches.length){
-    dd.innerHTML = '<div class="dropdown-empty">No se encontraron comunas</div>';
-    dd.classList.add('open');
+    dropdown.innerHTML = '<div class="dropdown-empty">Sin resultados. Intenta con otra ortografía.</div>';
+    dropdown.classList.add('open');
     return;
   }
-  const re = new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
-  dd.innerHTML = matches.map(c => {
-    const hi = c.nombre.replace(re,'<strong>$1</strong>');
-    const dis = c.habilitado !== 'S';
-    const idx = allComunas.indexOf(c);
-    return `<div class="dropdown-item${dis?' no-service':''}" data-idx="${idx}" onclick="selectComuna(${idx})">
-      <div class="comuna-name">${hi}</div>
-      ${dis?'<div class="courier-hint">Sin cobertura</div>':''}
-    </div>`;
-  }).join('');
-  dd.classList.add('open');
+  matches.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = 'dropdown-item' + (c.habilitado !== 'S' ? ' no-service' : '');
+    el.dataset.idx = i;
+    const hint = c.ids.length
+      ? c.ids.map(id => TRANSPORTES.find(t=>t.id===id)?.nombre || id).join(', ')
+      : (c.habilitado === 'S' ? 'Sin transporte asignado' : 'Envío no disponible');
+    el.innerHTML = `<div><div class="comuna-name">${c.nombre}</div><div class="courier-hint">${hint}</div></div>`;
+    el.addEventListener('mousedown', ()=>{ selectComuna(c); });
+    dropdown.appendChild(el);
+  });
   dropdownFocusIdx = -1;
+  dropdown.classList.add('open');
 }
 
-function closeDropdown(){
-  const dd = document.getElementById('dropdown');
-  dd.classList.remove('open');
-  dd.innerHTML = '';
-  dropdownFocusIdx = -1;
-}
-
-function selectComuna(idx){
-  const c = allComunas[idx];
-  if(!c) return;
-  selectedComuna = c;
-  document.getElementById('comuna-input').value = c.nombre;
-  closeDropdown();
+input.addEventListener('input', function(){
   document.getElementById('err-comuna').classList.add('hidden');
-  showTransports(c);
-}
+  this.classList.remove('error');
+  selectedComuna = null;
+  selectedTransportId = null;
+  hideTransportSection();
+  hideResults();
 
-function showTransports(c){
-  const sec = document.getElementById('transport-section');
-  document.getElementById('comuna-selected-name').textContent = c.nombre;
-  const chipsEl = document.getElementById('chips');
-  const note = document.getElementById('note-transporte');
-
-  if(c.habilitado !== 'S' || !c.ids.length){
-    chipsEl.innerHTML = '<div class="disabled-notice">⚠ No hay cobertura de transporte en esta comuna.</div>';
-    note.style.display = 'none';
-    sec.classList.remove('hidden');
-    document.getElementById('card-pedido').classList.add('hidden');
-    return;
-  }
-
-  selectedTransportId = c.ids[0];
-  chipsEl.innerHTML = c.ids.map(id => {
-    const t = TRANSPORTES.find(x => x.id === id);
-    if(!t) return '';
-    const sel = id === selectedTransportId;
-    return `<div class="chip${t.par?' pay-on-delivery':''}${sel?' selected':''}" onclick="selectTransport('${id}',this)">
-      <span class="chip-dot"></span>${t.nombre}${t.par?' · Pago al recibir':''}
-    </div>`;
-  }).join('');
-
-  note.style.display = 'none';
-  sec.classList.remove('hidden');
-  document.getElementById('card-pedido').classList.remove('hidden');
-
-  document.getElementById('step1-ind').classList.replace('active','done');
-  document.getElementById('line1').classList.add('done');
-  document.getElementById('step2-ind').classList.add('active');
-}
-
-function selectTransport(id, el){
-  selectedTransportId = id;
-  document.querySelectorAll('#chips .chip').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-}
-
-/* ── Calcular flete ── */
-function calcular(){
-  let ok = true;
-  if(!selectedComuna){
-    document.getElementById('err-comuna').classList.remove('hidden');
-    ok = false;
-  }
-  const rawValor = document.getElementById('valor').value.replace(/\D/g,'');
-  const valor = parseInt(rawValor, 10);
-  if(!rawValor || isNaN(valor) || valor <= 0){
-    document.getElementById('err-valor').classList.remove('hidden');
-    ok = false;
-  } else {
-    document.getElementById('err-valor').classList.add('hidden');
-  }
-  if(!ok) return;
-
-  const nk  = document.getElementById('nivel').value;
-  const tSel = TRANSPORTES.find(x => x.id === selectedTransportId);
-  if(!tSel) return;
-
-  const res = calcFlete(tSel, nk, valor);
-
-  document.getElementById('step2-ind').classList.replace('active','done');
-  document.getElementById('line2').classList.add('done');
-  document.getElementById('step3-ind').classList.add('active');
-
-  const cardRes = document.getElementById('card-resultado');
-  cardRes.classList.remove('hidden');
-  document.getElementById('res-context').textContent =
-    `${selectedComuna.nombre} · ${NIVEL_LABEL[nk]} · Compra de ${clp(valor)}`;
-  document.getElementById('res-transport').textContent = tSel.nombre;
-
-  const body = document.getElementById('res-body');
-  if(tSel.par){
-    body.innerHTML = `<div class="result-badge">Pago al recibir</div>
-      <div class="big-price pay-on-delivery">Pago directo al transportista</div>
-      <div class="result-note warning">Este transporte cobra el flete al destinatario en el momento de la entrega.</div>`;
-  } else if(res){
-    body.innerHTML = `<div class="big-price">${clp(res.cost)}</div>
-      <div class="result-note">${res.minApplied
-        ? `Se aplica el <strong>mínimo de ${clp(tSel.minimo)}</strong> (${(tSel.tasas[nk]*100).toFixed(2)}% de ${clp(valor)} = ${clp(res.pct)})`
-        : `${(tSel.tasas[nk]*100).toFixed(2)}% de ${clp(valor)}`}</div>`;
-  }
-
-  // Tabla comparativa (solo si hay más de un transporte disponible)
-  const avail = selectedComuna.ids.map(id => TRANSPORTES.find(x => x.id === id)).filter(Boolean);
-  if(avail.length > 1){
-    const cardTabla = document.getElementById('card-tabla');
-    document.getElementById('tabla-subtitle').textContent =
-      `${selectedComuna.nombre} · ${NIVEL_LABEL[nk]} · ${clp(valor)}`;
-    document.getElementById('tabla-body').innerHTML = avail.map(t => {
-      const r   = calcFlete(t, nk, valor);
-      const sel = t.id === selectedTransportId;
-      const costTxt = t.par
-        ? `<td class="pay-on-delivery">Pago al recibir</td>`
-        : `<td class="cost-col">${clp(r.cost)}</td>`;
-      return `<tr class="${sel?'selected':''}">
-        <td>${t.nombre}${sel?'<span class="badge-table">Seleccionado</span>':''}${t.par?'<span class="badge-par">PAR</span>':''}</td>
-        ${costTxt}
-      </tr>`;
-    }).join('');
-    cardTabla.classList.remove('hidden');
-  }
-
-  cardRes.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-/* ── Formato de valor (separador de miles) ── */
-document.getElementById('valor').addEventListener('input', function(){
-  const raw = this.value.replace(/\D/g,'');
-  this.value = raw ? '$'+parseInt(raw,10).toLocaleString('es-CL') : '';
+  const q = this.value.trim();
+  if(q.length < 1){ dropdown.classList.remove('open'); return; }
+  renderDropdown(getMatches(q));
 });
 
-/* ── Wiring autocomplete ── */
-(function(){
-  const input = document.getElementById('comuna-input');
-
-  input.addEventListener('input', function(){
-    const q = this.value.trim();
-    if(q.length < 1){ closeDropdown(); return; }
-    renderDropdown(getMatches(q), q);
-  });
-
-  input.addEventListener('keydown', function(e){
-    const items = document.querySelectorAll('#dropdown .dropdown-item');
-    if(!items.length) return;
-    if(e.key === 'ArrowDown'){
-      e.preventDefault();
-      dropdownFocusIdx = Math.min(dropdownFocusIdx+1, items.length-1);
-      items.forEach((el,i) => el.classList.toggle('focused', i===dropdownFocusIdx));
-    } else if(e.key === 'ArrowUp'){
-      e.preventDefault();
-      dropdownFocusIdx = Math.max(dropdownFocusIdx-1, 0);
-      items.forEach((el,i) => el.classList.toggle('focused', i===dropdownFocusIdx));
-    } else if(e.key === 'Enter' && dropdownFocusIdx >= 0){
-      e.preventDefault();
-      items[dropdownFocusIdx].click();
-    } else if(e.key === 'Escape'){
-      closeDropdown();
+input.addEventListener('keydown', function(e){
+  const items = dropdown.querySelectorAll('.dropdown-item');
+  if(e.key === 'ArrowDown'){
+    e.preventDefault();
+    dropdownFocusIdx = Math.min(dropdownFocusIdx+1, items.length-1);
+    updateFocus(items);
+  } else if(e.key === 'ArrowUp'){
+    e.preventDefault();
+    dropdownFocusIdx = Math.max(dropdownFocusIdx-1, 0);
+    updateFocus(items);
+  } else if(e.key === 'Enter'){
+    e.preventDefault();
+    if(dropdownFocusIdx >= 0 && items[dropdownFocusIdx]){
+      const idx = parseInt(items[dropdownFocusIdx].dataset.idx);
+      const matches = getMatches(input.value.trim());
+      if(matches[idx]) selectComuna(matches[idx]);
     }
+  } else if(e.key === 'Escape'){
+    dropdown.classList.remove('open');
+  }
+});
+
+function updateFocus(items){
+  items.forEach((el,i)=>{ el.classList.toggle('focused', i===dropdownFocusIdx); });
+  if(items[dropdownFocusIdx]) items[dropdownFocusIdx].scrollIntoView({block:'nearest'});
+}
+
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.autocomplete-wrap')) dropdown.classList.remove('open');
+});
+
+function selectComuna(c){
+  selectedComuna = c;
+  input.value = c.nombre;
+  dropdown.classList.remove('open');
+  input.classList.remove('error');
+  document.getElementById('err-comuna').classList.add('hidden');
+  renderTransportChips(c);
+}
+
+/* ── Transport chips ── */
+function renderTransportChips(c){
+  const section   = document.getElementById('transport-section');
+  const chipsEl   = document.getElementById('chips');
+  const nameLabel = document.getElementById('comuna-selected-name');
+  const note      = document.getElementById('note-transporte');
+
+  nameLabel.textContent = c.nombre;
+  chipsEl.innerHTML = '';
+  note.style.display = 'none';
+  selectedTransportId = null;
+  hideResults();
+  document.getElementById('card-pedido').classList.add('hidden');
+
+  if(c.habilitado !== 'S'){
+    chipsEl.innerHTML = '<div class="disabled-notice">🚫 El envío a esta comuna no está habilitado actualmente.</div>';
+    section.classList.remove('hidden');
+    updateSteps(1);
+    return;
+  }
+
+  if(!c.ids.length){
+    chipsEl.innerHTML = '<div class="no-transport">📦 Esta comuna no tiene transportes asignados. Consulta con tu ejecutiva.</div>';
+    section.classList.remove('hidden');
+    updateSteps(1);
+    return;
+  }
+
+  const paOnDelivery = [];
+  const regular = [];
+  c.ids.forEach(id => {
+    const t = TRANSPORTES.find(x=>x.id===id);
+    if(!t) return;
+    t.par ? paOnDelivery.push(t) : regular.push(t);
   });
 
-  document.addEventListener('click', function(e){
-    if(!e.target.closest('.autocomplete-wrap')) closeDropdown();
+  [...regular, ...paOnDelivery].forEach(t => {
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (t.par ? ' pay-on-delivery' : '');
+    chip.dataset.tid = t.id;
+    chip.innerHTML = `<span class="chip-dot"></span>${t.nombre}${t.par ? ' <small style="font-size:10px;opacity:.8">(pago al recibir)</small>' : ''}`;
+    chip.addEventListener('click', ()=>{ selectTransport(c.ids, t.id); });
+    chipsEl.appendChild(chip);
   });
-})();
 
-/* ── Load comunas (datos embebidos) ── */
-function loadComunas(){
-  allComunas = COMUNAS_DATA.map(r => ({
-    nombre:     (r.nombre || '').trim(),
-    ids:        parseCouriersToIds(r.couriers || ''),
-    habilitado: (r.habilitado || 'N').toString().trim().toUpperCase()
-  })).filter(c => c.nombre);
+  if(paOnDelivery.length){
+    note.textContent = '🚚 Los transportes de pago al recibir requieren que pagues directamente al transportista cuando llegue tu pedido.';
+    note.style.display = 'block';
+  }
 
-  document.getElementById('loading-comunas').classList.add('hidden');
-  document.getElementById('comunas-ready').classList.remove('hidden');
+  section.classList.remove('hidden');
+  updateSteps(1);
+}
+
+function selectTransport(availableIds, tid){
+  selectedTransportId = tid;
+  document.querySelectorAll('.chip').forEach(ch=>{
+    ch.classList.toggle('selected', ch.dataset.tid === tid);
+  });
+  hideResults();
+  document.getElementById('card-pedido').classList.remove('hidden');
+  updateSteps(2);
+  document.getElementById('card-pedido').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* ── Calculate ── */
+function calcular(){
+  // Validate
+  let ok = true;
+  if(!selectedComuna){ ok=false; input.classList.add('error'); document.getElementById('err-comuna').classList.remove('hidden'); }
+  const valor = getValor();
+  if(!valor||valor<=0){ ok=false; document.getElementById('valor').classList.add('error'); document.getElementById('err-valor').classList.remove('hidden'); }
+  if(!ok) return;
+
+  const nk = document.getElementById('nivel').value;
+  const nl = NIVEL_LABEL[nk];
+  const t  = TRANSPORTES.find(x=>x.id===selectedTransportId);
+  if(!t) return;
+  const f  = calcFlete(t, nk, valor);
+
+  // Result header
+  document.getElementById('res-context').textContent = nl + '  ·  Compra ' + clp(valor);
+  document.getElementById('res-transport').textContent = t.nombre;
+
+  const resBody = document.getElementById('res-body');
+  if(f === null){
+    resBody.innerHTML = `
+      <div class="result-badge">PAGO AL RECIBIR</div>
+      <div class="big-price pay-on-delivery">Al recibir</div>
+      <div class="result-note warning">🚚 Deberás pagar directamente al transportista cuando recibas tu pedido en <strong>${selectedComuna.nombre}</strong>.</div>`;
+  } else {
+    const minTxt = f.minApplied
+      ? `<div class="result-note">Se aplica el <strong>flete mínimo</strong> de ${t.nombre} para tu compra en <strong>${selectedComuna.nombre}</strong>.</div>`
+      : `<div class="result-note">Costo de flete estimado para tu compra en <strong>${selectedComuna.nombre}</strong>.</div>`;
+    resBody.innerHTML = `<div class="big-price">${clp(f.cost)}</div>${minTxt}`;
+  }
+
+  document.getElementById('card-resultado').classList.remove('hidden');
+
+  // Comparison table — show all available transports for this commune
+  const availableIds = selectedComuna.ids;
+  document.getElementById('tabla-subtitle').textContent = nl + ' · ' + clp(valor) + ' · ' + selectedComuna.nombre;
+  const tbody = document.getElementById('tabla-body');
+  tbody.innerHTML = '';
+
+  TRANSPORTES.filter(tr => availableIds.includes(tr.id)).forEach((tr, i) => {
+    const fr  = calcFlete(tr, nk, valor);
+    const sel = tr.id === selectedTransportId;
+    const row = document.createElement('tr');
+    row.className = sel ? 'selected' : (i%2===0 ? 'odd' : 'even');
+
+    const nameTd = document.createElement('td');
+    nameTd.innerHTML = tr.nombre
+      + (sel ? '<span class="badge-table">tu elección</span>' : '')
+      + (tr.par ? '<span class="badge-par">al recibir</span>' : '');
+    row.appendChild(nameTd);
+
+    const costTd = document.createElement('td');
+    if(tr.par){
+      costTd.textContent = 'Al recibir';
+      costTd.className   = 'pay-on-delivery';
+    } else {
+      costTd.textContent = fr ? clp(fr.cost) : '—';
+      costTd.className   = 'cost-col';
+    }
+    row.appendChild(costTd);
+    tbody.appendChild(row);
+  });
+
+  document.getElementById('card-tabla').classList.remove('hidden');
+  updateSteps(3);
+  document.getElementById('card-resultado').scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+/* ── UI helpers ── */
+function hideTransportSection(){
+  document.getElementById('transport-section').classList.add('hidden');
+}
+function hideResults(){
+  document.getElementById('card-resultado').classList.add('hidden');
+  document.getElementById('card-tabla').classList.add('hidden');
+}
+function updateSteps(active){
+  [1,2,3].forEach(n => {
+    const el = document.getElementById('step'+n+'-ind');
+    el.classList.remove('active','done');
+    if(n < active)       el.classList.add('done');
+    else if(n === active) el.classList.add('active');
+  });
+  document.getElementById('line1').classList.toggle('done', active > 1);
+  document.getElementById('line2').classList.toggle('done', active > 2);
+}
+
+// Format input as $ with dots
+const valorInput = document.getElementById('valor');
+valorInput.addEventListener('input', function(){
+  const digits = this.value.replace(/\D/g,'');
+  const num = parseInt(digits||'0',10);
+  this.value = num > 0 ? '$'+num.toLocaleString('es-CL') : '';
+  this.classList.remove('error');
+  document.getElementById('err-valor').classList.add('hidden');
+});
+valorInput.addEventListener('keydown', function(e){ if(e.key==='Enter') calcular(); });
+
+function getValor(){
+  return parseInt(valorInput.value.replace(/\D/g,'')||'0', 10);
 }
 
 // Init
